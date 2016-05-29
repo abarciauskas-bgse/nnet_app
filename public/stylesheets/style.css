@@ -1,0 +1,71 @@
+body {
+    /*background: #333;*/
+    font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif; 
+    font-weight: 200;
+}
+#container {
+    width: 1024px;
+    display: block;
+    margin: 40px auto;
+}
+
+svg {
+    padding-top: 12px; /*protects our labels*/
+}
+
+.memory_cell {
+    stroke: #ddd;
+    stroke-width: 1px;
+}
+.link {
+    /*visibility: hidden;*/
+    stroke-width: 1px;
+    stroke-dasharray: 10, 2;
+    stroke: #ddd;
+}
+.unit {
+    fill: white;
+    stroke: #ddd;
+}
+
+marker {
+    fill: #ddd;
+    stroke-width: 0;
+}
+
+.flowline {
+  stroke-dasharray: 10, 2;
+  animation: flow 2s linear infinite;
+  -webkit-animation: flow 2s linear infinite;
+}      
+
+@keyframes flow {
+  from {
+    stroke-dashoffset: 12;
+  }
+
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@-webkit-keyframes flow {
+  from {
+    stroke-dashoffset: 12;
+  }
+
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.nav-tabs {
+    float: right;
+    width: 44%;
+    font-size: 10px;
+    margin-top: 20px;
+}
+
+.nav-tabs li {
+    float: right;
+}

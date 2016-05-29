@@ -1,0 +1,48 @@
+doctype html
+html
+  head
+    title= title
+    link(rel='stylesheet', href='/stylesheets/style.css')
+    <!-- BOOTSTRAP LINKS -->
+    <!-- Latest compiled and minified CSS -->
+    link(rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css")
+    <!-- jQuery library -->
+    script(src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js")
+    <!-- Latest compiled JavaScript -->
+    script(src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/javascripts/bootstrap.min.js")
+        <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css">
+    script(src="//d3js.org/d3.v3.min.js")
+    script(src="/js/colorbrewer.min.js")
+    script(src="/js/underscore.js")
+    script(src="/js/layout_vars.js")
+    script(src="/js/color_scales.js")
+    script(src="/js/utils.js")
+    script(src="/js/song.js")
+    script(src="/js/unit_set.js")
+    script(src="/js/iter_note_set.js")
+    script(src="/js/neuron.js")
+    script(src="/js/weight_set.js")
+    script(src="/js/hidden_state.js")
+    script(src="/js/memory_cell.js")
+    script(src="/js/transfer_line_set.js")
+    script(src="/js/transfer_line.js")
+    script(src="/js/sub_iters.js")
+  body
+    #container
+        ul(class="nav nav-tabs")          
+          li(class = active_page == "home" ? "active" : "")
+            a(href="/") Home
+          li
+            a(href="#") What is a neuron?
+          li
+            a(href="#") What is a neural network?                       
+          li(class = active_page == "training" ? "active" : "")
+            a(href="/train") Train            
+          li
+            a(href="#") Create            
+        block content
+  footer
+    script(src="/js/training_walkthru.js")
+    script(src="/js/add_network.js")
+    script(src="/js/add_song_plot.js")
+    block footer_content
