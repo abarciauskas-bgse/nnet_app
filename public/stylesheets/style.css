@@ -23,6 +23,12 @@ svg {
     stroke-dasharray: 10, 2;
     stroke: #ddd;
 }
+
+.static-link {
+    stroke-dasharray: none;
+    stroke: #ddd;
+}
+
 .unit {
     fill: white;
     stroke: #ddd;

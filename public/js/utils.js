@@ -180,14 +180,7 @@ var add_unit_sets = function(outer_group, set_type, obj) {
         return {index: idx, type: set_type}
     }))    
 
-    set_group.selectAll('rect')
-        .data(unit_data)
-        .enter().append('rect')
-            .attr('class', function(d, i) { return 'unit ' + d.type + ' ' + css_identifier(d.type, obj) })
-            .attr('id', css_identifier(set_type + '_set', obj))
-            .attr('width', unit_width)
-            .attr('height', unit_height)
-            .attr('y', function(d, i) { return d.index*unit_height })
+    add_units(set_group, set_type, unit_data, obj)
     if (obj.network == 'whatisaneuron') {
         set_group.selectAll('rect.' + set_type)
           .attr('width', unit_width - 2)
@@ -195,5 +188,16 @@ var add_unit_sets = function(outer_group, set_type, obj) {
           .attr('y', function(d, i) { return d.index*unit_height+1 })
           .attr('x', 1)
     }
+}
+
+var add_units = function(set_group, set_type, data, obj) {
+    set_group.selectAll('rect.' + set_type)
+        .data(data)
+        .enter().append('rect')
+            .attr('class', function(d, i) { return 'unit ' + d.type + ' ' + css_identifier(d.type, obj) })
+            .attr('id', css_identifier(set_type + '_set', obj))
+            .attr('width', unit_width)
+            .attr('height', unit_height)
+            .attr('y', function(d, i) { return d.index*unit_height })
 }
 

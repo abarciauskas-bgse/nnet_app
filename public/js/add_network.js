@@ -8,7 +8,6 @@ add_network = function(network) {
     }
     for (i = 0; i < unitsets.length; i++) {
        unitset = new UnitSet(unitsets[i][0], unitsets[i][1], network)
-       unitset.add()
     }
 
     for (layer_i = 0; layer_i < num_layers; layer_i++) {
@@ -35,4 +34,6 @@ add_network = function(network) {
 
         }
     }
+
+    unit_sets.forEach(function(set) { set.add() })
 };

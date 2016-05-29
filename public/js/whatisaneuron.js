@@ -23,9 +23,11 @@ d3.select('#whatisaneuron').attr('transform', 'translate(' + layer_width/2 + ',0
 var sim_data = gen_data();
 
 var step = function() {
+    weight_sets[0].update_weights()    
     unit_sets[0].update_values()
-    weight_sets[0].update_weights()
     tlines.forEach(function(line) { return line.grow() })
+    unit_sets[0].multiply()
+    console.log(unit_sets[0].wx_values)
 }
 
 step();
