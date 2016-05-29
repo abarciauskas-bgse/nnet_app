@@ -52,11 +52,12 @@ TransferLine.prototype.add = function() {
             .attr("stroke", medium_grey)
             .attr('fill', 'none')
             .attr('visibility', 'hidden')
-            .attr("marker-end", 'url(#' + marker_id + ')');
+            .attr("marker-end", (this.network == 'whatisaneuron' ? '' : 'url(#' + marker_id + ')'));
     this.path = path; 
 }
 
 TransferLine.prototype.grow = function(duration = default_sub_iter_duration) {
+    if (this.network == 'whatisaneuron') { this.path.style('stroke-width', whscale(Math.abs(unit_sets[0].values[this.index]))) }
     this.path.attr('visibility', 'visible')
       .transition().duration(duration)
       .attr('d', line_function(this.transfer_line_data('grow')))

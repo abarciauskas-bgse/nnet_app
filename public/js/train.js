@@ -15,8 +15,8 @@ var song = new Song('/js/daft_punk-one_more_time.json', 'training')
 
 // initial state stuff
 if (!layer1_visible) {
-    d3.select('#layer1').selectAll('*').style('visibility', 'hidden')
-    d3.select('#layer0').attr('transform', 'translate(' + layer_width/2 + ',0)')
+    d3.select('#training_layer0').selectAll('*').style('visibility', 'hidden')
+    d3.select('#training_layer1').attr('transform', 'translate(' + layer_width/2 + ',0)')
 }
 
 var current_iter = 0

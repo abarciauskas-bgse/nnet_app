@@ -8,7 +8,12 @@ var css_identifier = function(object_type, obj) {
 
 var layer_group = function(object, network) {
     if (object.layer == 0) {
-        layer = (network == 'training') ? training_layer0 : create_layer0
+        switch (network) {
+            case 'training': layer = training_layer0; break;
+            case 'create': layer = create_layer0; break;
+            case 'whatisaneuron': layer = whatisaneuron_layer0; break;
+        }
+        //layer = (network == 'training') ? training_layer0 : create_layer0
     } else {
         layer = (network == 'training') ? training_layer1 : create_layer1
     }
@@ -117,7 +122,7 @@ var color_units = function(type, layer) {
 }
 
 var add_marker = function(marker_id) {
-    marker = training_group.append("defs").append("marker")
+    marker = svg.append("defs").append("marker")
         .attr("id", marker_id)
         .attr("viewBox", "0 -5 10 10")
         .attr("refX", 2)
@@ -155,5 +160,40 @@ var update_units = function(layer, type) {
             unit_set.values[i] = total_prob
             return Math.max(0.15, total_prob)
       })
+}
+
+
+var add_unit_sets = function(outer_group, set_type, obj) {
+    var set_group = outer_group.append('g')
+                        .attr('class', set_type + '_set')
+                        .attr('id', css_identifier(set_type + '_set', obj))
+                        .attr('transform', 'translate(' + obj.x_offset + ',' + obj.y_offset + ')')
+    obj.d3_group = set_group
+
+    unit_data = []
+    if (obj.network == 'whatisaneuron') {
+        unit_data = _.map(d3.range(num_classes), function(idx) {
+            return {index: idx, type: set_type + '_container'}
+        })
+    }
+    unit_data.push.apply(unit_data, _.map(d3.range(num_classes), function(idx) {
+        return {index: idx, type: set_type}
+    }))    
+
+    set_group.selectAll('rect')
+        .data(unit_data)
+        .enter().append('rect')
+            .attr('class', function(d, i) { return 'unit ' + d.type + ' ' + css_identifier(d.type, obj) })
+            .attr('id', css_identifier(set_type + '_set', obj))
+            .attr('width', unit_width)
+            .attr('height', unit_height)
+            .attr('y', function(d, i) { return d.index*unit_height })
+    if (obj.network == 'whatisaneuron') {
+        set_group.selectAll('rect.' + set_type)
+          .attr('width', unit_width - 2)
+          .attr('height', unit_height - 2)
+          .attr('y', function(d, i) { return d.index*unit_height+1 })
+          .attr('x', 1)
+    }
 }
 
