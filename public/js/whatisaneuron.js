@@ -20,7 +20,7 @@ d3.select('#whatisaneuron').attr('transform', 'translate(' + layer_width/2 + ',0
 
 
 // LAYOUT VARS FOR whatisaneuron
-var scale = 3 // scale of data, -scale to scale
+var scale = 3// scale of data, -scale to scale
 var transfer_multiply_height = unit_height
 var transfer_addition_height = transfer_multiply_height*2
 var transfer_multiply_xscale = d3.scale.linear()
@@ -70,7 +70,7 @@ neurons[0].group.append('svg:rect')
     .attr('class', 'negative_region')
     .attr('x', threshold_offset-barwidth)
     .attr('y', threshold_top_offset + unit_height)
-    .attr('height', transfer_multiply_height - threshold_top_offset)
+    .attr('height', transfer_multiply_height)
     .attr('width', threshold_width)
 
 // DATA VARS

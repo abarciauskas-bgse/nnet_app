@@ -348,4 +348,10 @@ var transfer = function(x, w) {
     add(shift, shift_sign)
     activate()
     threshold(final_transfer_value, final_output_value)
+
+    colors = ['#9F55E8','#E88923']
+    d3.select('#whatisaneuron_unit_set_output_L0').selectAll('rect')
+      .transition().delay(sub_step_time*5).duration(sub_step_time)
+      .style('fill-opacity', function(d, i) { return Math.max(0.2, (i == 0) ? (1 - final_output_value) : final_output_value) })
+      .style('fill', function(d, i) { return colors[i] })
 }

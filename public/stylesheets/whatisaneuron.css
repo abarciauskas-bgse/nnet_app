@@ -10,7 +10,7 @@
 }
 
 .dot-active {
-  opacity: 0.2;
+    opacity: 0.2;
 }
 
 #second_plot_group .dot-active {
