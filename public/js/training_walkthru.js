@@ -80,7 +80,7 @@ $('#training-action-button').on('click', function() {
     // branching: either we are done setting up the first layer and there's nothing else to do
     // or we need to setup the second layer   
     } else if (current_state == 'sub_iter4' && (!layer1_visible || two_layers_setup)) {
-        $('#info-text').html("We calculate how wrong our guess was and update the weights. (ADD ME: VISUALIZE")
+        $('#info-text').html("We calculate how wrong our guess was and update the weights.")
         $('#training-action-button').html("Update weights")
 
         current_state = 'backpropagate'

@@ -26,7 +26,7 @@ add_network = function(network) {
                 hidden_state.add()
             }
 
-            transfer_line_types = (network == 'create' || network == 'training') ? ['xw', 'hh', 'hy', 'wxh'] : ['xw'] //,'wxsum','thresh']
+            transfer_line_types = (network == 'create' || network == 'training') ? ['xw', 'hh', 'hy', 'wxh'] : []
             transfer_line_types.forEach(function(type) {
                 tl_set = new TransferLineSet(type, layer_i, neuron_i, network)
                 tl_set.add()

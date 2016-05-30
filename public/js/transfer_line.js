@@ -14,8 +14,8 @@ var TransferLine = function(type, layer, neuron, set, index) {
 TransferLine.prototype.transfer_line_data = function(state) {
     unit_offset = unit_height*this.index + unit_height/2
 
-    source_y = this.source.y_position + (this.network == 'whatisaneuron' ? -Math.sign(this.value())*this.stroke_width()/2 : 0)
-    target_y = this.target.y_position + ((this.network == 'whatisaneuron' && state == 'grow') ? -Math.sign(this.weight())*this.stroke_width()/2  : 0)
+    source_y = this.source.y_position
+    target_y = this.target.y_position
 
     target_y = this.type == 'wxh' ? target_y + unit_height/2 : target_y + unit_offset
     y_start = source_y + (this.type == 'hh' ? unit_height/2 : unit_offset)
@@ -28,7 +28,7 @@ TransferLine.prototype.transfer_line_data = function(state) {
             [0, y_start],
             [full_transfer_width*first_break, y_start],
             [full_transfer_width*(1-first_break), target_y],
-            [full_transfer_width - (this.network == 'whatisaneuron' ? 0 : 6), target_y]
+            [full_transfer_width - 6, target_y]
         ]
     } else if (state == 'init') {
         line_data = [
@@ -48,30 +48,17 @@ TransferLine.prototype.add = function() {
     this.marker = marker   
     path = this.set.d3_group.append("path")
             .attr("d", line_function(this.transfer_line_data('init')))
-            .attr('class', this.network == 'whatisaneuron' ? 'static-link' : 'link')
+            .attr('class', 'link')
             .attr("stroke", medium_grey)
             .attr('fill', 'none')
             .attr('visibility', 'hidden')
-            .attr("marker-end", (this.network == 'whatisaneuron' ? '' : 'url(#' + marker_id + ')'));
+            .attr("marker-end", 'url(#' + marker_id + ')');
     this.path = path; 
 }
 
 TransferLine.prototype.grow = function(duration = default_sub_iter_duration) {
-    if (this.network == 'whatisaneuron') { this.path.style('stroke-width', this.stroke_width()) }
     this.path.attr('visibility', 'visible')
       .transition().duration(duration)
       .attr('d', line_function(this.transfer_line_data('grow')))
-}
-
-TransferLine.prototype.stroke_width = function() {
-    return whscale(Math.abs(this.value()))    
-}
-
-TransferLine.prototype.value = function() {
-    return this.set.source.values[this.index]
-}
-
-TransferLine.prototype.weight = function() {
-    return this.set.target.weights[this.index]
 }
 

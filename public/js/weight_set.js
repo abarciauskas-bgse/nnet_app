@@ -36,11 +36,11 @@ WeightSet.prototype.update_weights = function() {
             if (network == 'whatisaneuron') {
                 weight = weights[i]
                 height_offset = d.index*unit_height + unit_height/2
-                height = weight > 0 ? height_offset - whscale(Math.abs(weight)) : height_offset
+                this_height = weight > 0 ? height_offset - whscale(Math.abs(weight)) : height_offset
             } else { 
-                height = d.index*unit_height
+                this_height = d.index*unit_height
             }
-            return height
+            return this_height
         })
 }
 
