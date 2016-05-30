@@ -138,7 +138,7 @@ var loss_line_function = d3.svg.line()
         .y(function(d, i) { return loss_yscale(d) })
 
 var play = function() {
-    for (var iter = 0; iter < max_iters*n; iter++) {
+    for (var iter = 0; iter < max_iters*n-n; iter++) {
         current_iter += 1
         step_duration = time_scale(current_iter)
         timeouts.push(

@@ -30,7 +30,7 @@ var step_update = function(iter) {
     update_current_point(iter)
     update_shaded(iter_weights, iter)
     update_loss(short_term_regrets, iter_loss, iter)
-    currentx_data = current_data[iter]
+    currentx_data = current_data[iter%n]
     x = [currentx_data.x1, currentx_data.x2]
     transfer(x, iter_weights)
     // highlight new point for first n iters
