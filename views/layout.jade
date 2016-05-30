@@ -33,15 +33,16 @@ html
     #container
         ul(class="nav nav-tabs")          
           li(class = active_page == "home" ? "active" : "")
-            a(href="/") Home
-          li
+            a(href="/")
+              i.material-icons(style='font-size:14px') home
+          li(class = active_page == "whatisaneuron" ? "active" : "")
             a(href="/whatisaneuron") What is a neuron?
-          li
-            a(href="#") What is a neural network?                       
+          li(class = active_page == "whatisaneuralnetwork" ? "active" : "")
+            a(href="/whatisaneuralnetwork") What is a neural network?                       
           li(class = active_page == "training" ? "active" : "")
             a(href="/train") Train            
           li
-            a(href="#") Create            
+            a(href="/create") Create            
         block content
   footer
     script(src="/js/training_walkthru.js")

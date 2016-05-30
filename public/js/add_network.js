@@ -9,7 +9,7 @@ add_network = function(network) {
     for (i = 0; i < unitsets.length; i++) {
        unitset = new UnitSet(unitsets[i][0], unitsets[i][1], network)
     }
-
+        
     for (layer_i = 0; layer_i < num_layers; layer_i++) {
         for (neuron_i = 0; neuron_i < num_neurons; neuron_i++) {
             neuron = new Neuron(layer_i, neuron_i, network);

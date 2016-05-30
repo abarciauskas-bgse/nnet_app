@@ -4,7 +4,7 @@ var router = express.Router();
 /* GET home page. */
 router.get('/', function(req, res, next) {
   res.render('home', {
-    title: 'the Neural Network Explorer',
+    title: 'The Neural Network Explorer',
     active_page: 'home'
   });
 });
