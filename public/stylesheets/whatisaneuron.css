@@ -1,0 +1,104 @@
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #eee;
+  shape-rendering: crispEdges;
+}
+
+.dot {
+  opacity: 0;
+}
+
+.dot-active {
+  opacity: 0.2;
+}
+
+#second_plot_group .dot-active {
+    opacity: 1;
+}
+
+.current-point {
+    opacity: 1;
+}
+
+.area {
+    stroke-width: 0;
+    opacity: 0.5;
+}
+
+#container {
+    width: 1024px;
+    display: block;
+    margin: 50px auto;
+}
+
+#controls {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: 30px;
+    margin: 0px auto;
+    margin-left: -20px;
+    text-align: center;
+}
+
+.player-icons {
+    font-size: 18px;
+    vertical-align: 18px;
+}
+
+.icon-lrg {
+    padding-left: 5px;
+    padding-right: 5px;
+    vertical-align: none;
+    font-size: 48px;
+    vertical-align: 5px;
+}    
+
+
+.negative_region {
+    fill: #ededed;
+
+}
+
+.pos_bar {
+    fill: #666;
+}
+
+.neg_bar {
+    fill: #333;
+}
+
+.wx_bar {
+    opacity: 0;
+}
+
+.link, .addition_link {
+  fill: none;
+  stroke: #ddd;
+  opacity: .5;
+  stroke-width: none;
+  stroke-dasharray: none;
+}
+
+#iterations-counter {
+    width: 100%;
+}
+
+#iterations-counter h1 {
+    text-align: right;
+    font-weight: 900;
+    font-size: 48px;
+}
+
+svg {
+    fill: #eee;
+}
+
+#title h2 {
+    font-size: 18px;
+    font-weight: 100;
+}
+#title {
+    margin-bottom: 60px;
+}

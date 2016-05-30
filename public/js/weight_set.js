@@ -20,13 +20,8 @@ WeightSet.prototype.add = function() {
 
 
 WeightSet.prototype.update_weights = function() {
-    if (this.network == 'whatisaneuron') {
-        weights = sim_data.all_weights[current_iter]
-        this.weights = weights
-    } else {
-        weights = _.map(_.range(0,num_classes), function() { return Math.random()*_.random(-1,1)})
-        this.weights = weights        
-    }
+    weights = _.map(_.range(0,num_classes), function() { return Math.random()*_.random(-1,1)})
+    this.weights = weights
     network = this.network
     this.d3_group.selectAll('rect.weight')
         .transition().duration(default_sub_iter_duration)

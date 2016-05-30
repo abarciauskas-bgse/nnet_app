@@ -7,8 +7,12 @@ block content
   <!-- Information Panel -->
   div(class="panel panel-default", style="width: 54%; position: relative; height: 100px;")
     div(class="panel-body", id="training-panel")
-        span#info-text This is a single neuron.
-
+        span#info-text This is a single, basic neuron. Neurons are the building blocks of neural networks. This neuron takes two input values, multiplies them each by a weight, sums the products, and then uses the threshold function (sigmoid) to map the result to a probability - a number between 0 and 1 (inclusive).      
+  #controls
+    i#refresh-button.material-icons.player-icons replay
+    i#play-button.material-icons.player-icons.icon-lrg play_arrow
+    <!-- i#pause-button.material-icons.player-icons pause -->
+    i#step-button.material-icons.player-icons skip_next
 block footer_content
   script(src="/js/rbinom.js")
   script(src="/js/randoms.js")

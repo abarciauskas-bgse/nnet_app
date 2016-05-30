@@ -1,4 +1,3 @@
-var sub_step_time = 1000
 var create_interval_data = function(x, type, weight) {
     // create unit and modulo of data
     var x_data = d3.range(Math.floor(Math.abs(x))).map(function() {
