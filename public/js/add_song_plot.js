@@ -3,8 +3,11 @@ var add_song_plot = function(d3_group) {
     song_plot_group = d3_group.append("g")
         .attr("id", "song_plot_group")
         .attr("transform", "translate(0," + songs_bar_y_offset + ")")
-    song_plot_yscale = d3.scale.linear().domain([0,num_classes]).range([0, song_plot_height])
-
+    song_plot_yscale = d3.scale.linear().domain([0,num_classes]).range([0, song_plot_height])    
+    song_plot_group.append("image")
+        .attr("xlink:href","/images/algorritmologos/neuron_alone.svg")
+        .attr("width", 90)
+        .attr("height", 90)          
     d3.range(0, num_classes).forEach(function(d) {
         song_plot_group.append("line")
             .attr("x1", 0)
