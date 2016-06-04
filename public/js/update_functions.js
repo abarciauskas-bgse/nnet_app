@@ -13,11 +13,20 @@ var update_loss = function(regrets, loss, delay_offset) {
     regrets.shift();
 }
 
-var update_current_point = function(iter) {
+var update_current_point = function(iter, tooltip = false) {
     var points = d3.selectAll('#first_plot_group .dot')
     points.classed('current-point', false)
     n = points[0].length
     current_point = d3.select(points[0][iter%n]).classed('current-point', true).attr('r',6)
+    position = $('.dot.dot-active.current-point').position()
+    //if (tooltip) {
+        div.transition()    
+            .duration(200)    
+            .style("opacity", .9);    
+        div.html('current training point')  
+            .style("left", (position.left) + "px")   
+            .style("top", (position.top) + "px");
+    //}
     klass = current_point.data()[0].class
     colors = ['#9F55E8','#E88923']
     d3.select('#whatisaneuron_unit_set_target_L0').selectAll('rect')

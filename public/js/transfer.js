@@ -133,7 +133,7 @@ var draw_addition_links = function(node_data, group, group_indx, update, shift) 
 var height_with_padding = function(d) {
     this_height = Math.abs(transfer_multiply_yscale(d.value))
     var padding = -2
-    return ((this_height + padding) > 2 ? (this_height + padding) : this_height)      
+    return ((this_height + padding) > 0 ? (this_height + padding) : 0)      
 }
 // function to add x and w to transfer multiply group plot
 var addwx_multiply = function(data, group, group_indx) {

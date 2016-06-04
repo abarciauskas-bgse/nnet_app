@@ -2,7 +2,6 @@ doctype html
 html
   head
     title= title
-    link(rel='stylesheet', href='/stylesheets/style.css')
     <!-- BOOTSTRAP LINKS -->
     <!-- Latest compiled and minified CSS -->
     link(rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css")
@@ -10,7 +9,9 @@ html
     script(src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js")
     <!-- Latest compiled JavaScript -->
     link(rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons")
+    link(rel='stylesheet', href='/stylesheets/style.css')
     script(src="//d3js.org/d3.v3.min.js")
+    script(src="/js/bootstrap.min.js")
     script(src="/js/colorbrewer.min.js")
     script(src="/js/underscore.js")
     script(src="/js/layout_vars.js")
@@ -30,19 +31,23 @@ html
     block header_content
   body
     #container
-        ul(class="nav nav-tabs")          
+      .row
+        .col-md-6
+          h1= title      
+      .row(style="margin-top: -50px")
+        ul(class="nav nav-tabs") 
+          li
+            a(href="/create") Create
+          li(class = active_page == "training" ? "active" : "")
+            a(href="/train") Train                         
+          li(class = active_page == "whatisaneuralnetwork" ? "active" : "")
+            a(href="/whatisaneuralnetwork") What is a neural network? 
+          li(class = active_page == "whatisaneuron" ? "active" : "")
+            a(href="/whatisaneuron") What is a neuron?                      
           li(class = active_page == "home" ? "active" : "")
             a(href="/")
-              i.material-icons(style='font-size:14px') home
-          li(class = active_page == "whatisaneuron" ? "active" : "")
-            a(href="/whatisaneuron") What is a neuron?
-          li(class = active_page == "whatisaneuralnetwork" ? "active" : "")
-            a(href="/whatisaneuralnetwork") What is a neural network?                       
-          li(class = active_page == "training" ? "active" : "")
-            a(href="/train") Train            
-          li
-            a(href="/create") Create            
-        block content
+              i.material-icons(style='font-size:14px') home            
+      block content
   footer
     script(src="/js/training_walkthru.js")
     script(src="/js/add_network.js")

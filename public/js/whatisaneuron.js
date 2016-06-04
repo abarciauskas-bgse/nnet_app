@@ -25,9 +25,9 @@ var transfer_multiply_height = unit_height
 var transfer_addition_height = transfer_multiply_height*2
 var transfer_multiply_xscale = d3.scale.linear()
     .range([0, transfer_multiply_height]);
-var transfer_multiply_yscale = d3.scale.linear()
-    .domain([-scale,0,scale])
-    .range([-transfer_multiply_height/2, 0, transfer_multiply_height/2]);
+var transfer_multiply_yscale = d3.scale.linear();
+transfer_multiply_yscale.domain([-scale,scale]);
+transfer_multiply_yscale.range([-transfer_multiply_height/2, transfer_multiply_height/2]).clamp(true);
 var wtoffset = transfer_width + inner_margin + unit_width
 var barwidth = unit_width
 var unit_bar_height = transfer_multiply_yscale(1)
@@ -151,14 +151,29 @@ var play = function() {
 }
 
 // Controls
-d3.select('#play-button').on("click", function() {play()});
-d3.select('#pause-button').on("click", function() {
+var playing = false
+var pause = function() {
     for (var i = 0; i < timeouts.length; i++) {
         clearTimeout(timeouts[i]);
     }
     //quick reset of the timer array you just cleared
     timeouts = []; 
-    total_time = 0;       
+    total_time = 0;     
+}
+d3.select('#play-button').on("click", function() {
+    if (!playing) {
+        playing = true
+        $('#play-button').html('pause')
+        play()
+    } else {
+        playing = false
+        $('#play-button').html('play_arrow')
+        pause()
+    }
+});
+
+d3.select('#pause-button').on("click", function() {
+    pause()      
 });
 d3.select("#step-button").on("click", function() {
     current_iter += 1
@@ -191,3 +206,32 @@ var current_iter_obj = new CurrentIter('whatisaneuron', initial_data)
 // INSTANTIATE GLOBAL VAR OF STEP - RESET IN THE STEP_UPDATE
 var sub_step_time = 1000
 var total_time = 0;
+$("#myModal").modal()
+var div = d3.select("body").append("div")   
+    .attr("class", "tooltip")               
+    .style("opacity", 0);
+
+var curr_state = 'entered'
+$('#whatisaneuron-action-button').on('click', function() {
+    if (curr_state == 'entered') {
+      current_iter += 1;
+      update_current_point(current_iter)
+      $('#whatisaneuron-action-button').html('Next step')
+      $('#myModal .modal-body').html('Weights are initialized randomly')
+      // Maybe add a timer here or if they try to click on anything?
+      $('.dot.dot-active.current-point').on('mouseover', function() {
+          $("#myModal").modal()
+          curr_state = 'first_point'
+      })
+    }
+    // current_iter = iter
+    // //d3.selectAll('#current-iteration').html(current_iter)
+    // iter_weights = all_weights[iter]
+    // iter_loss = long_term_regrets[iter]
+    // update_current_point(iter)
+    // update_shaded(iter_weights, iter)
+    // update_loss(short_term_regrets, iter_loss, iter)
+    // currentx_data = current_data[iter%n]
+    // x = [currentx_data.x1, currentx_data.x2]
+    // transfer(x, iter_weights)    
+});

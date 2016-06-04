@@ -3,6 +3,7 @@
 */
 // generate n random numbers, between [-scale, scale]
 // returns an array of length n
+// ROUNDS TO NEAREST 10th decimal
 function runifo(n, scale) {
     var rdraws = []
     for (var i = 0; i < n; i++) {

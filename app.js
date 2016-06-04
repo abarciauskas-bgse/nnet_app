@@ -13,6 +13,8 @@ var create = require('./routes/create');
 
 var app = express();
 
+app.locals.title = "Neural Network Explorer";
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
