@@ -10,7 +10,12 @@ body {
 }
 
 #myModal {
-  top: 300px;
+  position: absolute;
+  top: 200px;
+}
+
+body.modal-open {
+  overflow: visible;
 }
 
 svg {
