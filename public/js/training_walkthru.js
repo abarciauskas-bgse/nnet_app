@@ -13,9 +13,10 @@ $('#training-action-button').on('click', function() {
         weight_sets.forEach(function(set) {
             set.update_weights();
         })
-
-        add_label_pointer(_.find(weight_sets, {layer: 0, type: 'xw', neuron: 0}).d3_group, 'input weights', 'top right')
-        add_label_pointer(_.find(weight_sets, {layer: 1, type: 'xw', neuron: 0}).d3_group, 'input weights', 'top right')
+        wts_1_id = '#' + _.find(weight_sets, {layer: 0, type: 'xw', neuron: 0}).d3_group.attr('id')
+        wts_2_id = '#' + _.find(weight_sets, {layer: 1, type: 'xw', neuron: 0}).d3_group.attr('id')
+        add_label_pointer(wts_1_id, 'input weights', 'top right')
+        add_label_pointer(wts_2_id, 'input weights', 'top right')
 
         current_state = 'network_setup'
     } else if (current_state == 'network_setup') {
@@ -25,14 +26,10 @@ $('#training-action-button').on('click', function() {
 
         song.draw_song_unit_line('input', 'grow')
         song.draw_song_unit_line('target', 'grow')
-
-        add_label_pointer(
-            _.find(unit_sets, {layer: 0, type: 'input'}).d3_group, 'inputs', 'top right')
-        add_label_pointer(
-            _.find(unit_sets,
-                {layer: (layer1_visible ? 1 : 0), type: 'target'}).d3_group,
-                'targets',
-                (layer1_visible ? 'top left' : 'bottom right'))
+        units_1_id = '#' + _.find(unit_sets, {layer: 0, type: 'input'}).d3_group.attr('id')
+        units_2_id = '#' + _.find(unit_sets, {layer: (layer1_visible ? 1 : 0), type: 'target'}).d3_group.attr('id')
+        add_label_pointer(units_1_id, 'inputs', 'top right')
+        add_label_pointer(units_2_id, 'targets', (layer1_visible ? 'top left' : 'bottom right'))
 
         sub_iter0()
 
@@ -50,7 +47,8 @@ $('#training-action-button').on('click', function() {
             memory_cells_open_close('left', 0)
             tl.grow()
         })
-        add_label_pointer(_.find(memory_cells, {layer: 0}).d3_group, 'memory', 'top right')
+        memory_id = '.' + _.find(memory_cells, {layer: 0}).d3_group.attr('class')
+        add_label_pointer(memory_id, 'memory', 'top right')
         sub_iter2()
         current_state = 'sub_iter2'
     } else if (current_state == 'sub_iter2') {
@@ -64,7 +62,8 @@ $('#training-action-button').on('click', function() {
               .delay(default_sub_iter_duration)
               .attr('class', 'flowline')
         })
-        add_label_pointer(_.find(weight_sets, {layer: 0, neuron: 0, type: 'hy'}).d3_group, 'output weights', 'top right')
+        wt_set_id = '#' + _.find(weight_sets, {layer: 0, neuron: 0, type: 'hy'}).d3_group.attr('id')
+        add_label_pointer(wt_set_id, 'output weights', 'top right')
         sub_iter3()
         current_state = 'sub_iter3'
     } else if (current_state == 'sub_iter3') {
@@ -74,7 +73,8 @@ $('#training-action-button').on('click', function() {
         hy_lines.forEach(function(tl) {
             tl.grow()
         })
-        add_label_pointer(_.find(unit_sets, {type: 'output', layer: 0}).d3_group, 'outputs', 'top')
+        unit_set_id = '#' + _.find(unit_sets, {type: 'output', layer: 0}).d3_group.attr('id')
+        add_label_pointer(unit_set_id, 'outputs', 'top')
         sub_iter4()
         current_state = 'sub_iter4'
     // branching: either we are done setting up the first layer and there's nothing else to do

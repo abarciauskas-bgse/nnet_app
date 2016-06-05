@@ -22,52 +22,49 @@ var layer_group = function(object, network) {
 var line_function = d3.svg.line().interpolate("basis");
 
 // FIXME: this is scary stuff
-var add_label_pointer = function(d3_selection, text, position) {
+var add_label_pointer = function(d3_selector, text, position, add_x_offset = 0, add_y_offset = 0) {
     offset = 30
-    client_rect = d3_selection[0][0].getBoundingClientRect()
-    start_width = client_rect.width
+    svg_location = $('svg').position()
+    var page_location = $(d3_selector).position()
     switch (position) {
         case 'bottom left':
-            x_offset = -1.5*offset;
-            y_offset = offset + client_rect.height;
+            x_offset = page_location.left - offset;
+            y_offset = page_location.top + offset;
             break;
         case 'bottom':
-            x_offset = -unit_width/2
-            y_offset = offset*1.25 + client_rect.height;
+            x_offset = page_location.left;
+            y_offset = page_location.top + offset;
             break;
         case 'top right':
-            x_offset = offset;
-            y_offset = -offset*1.25;
+            x_offset = page_location.left + offset;
+            y_offset = page_location.top - offset;
             break;    
         case 'top':
-            x_offset = -unit_width/2;
-            y_offset = -offset*1.25;
+            x_offset = page_location.left;
+            y_offset = page_location.top - offset;
             break;
         case 'top left':
-            x_offset = -1.75*offset;
-            y_offset = -offset;
+            x_offset = page_location.left - 1.5*offset;
+            y_offset = page_location.top - offset;
             break;    
         default: 
-            x_offset = offset
-            y_offset = -offset
+            x_offset = page_location.left;
+            y_offset = page_location.top;
     }
 
-    label_pointer_group = d3_selection.append('g')
-                              .attr('class','label_pointer_group')
-                              .attr('transform', 'translate(' + x_offset + ',' + y_offset + ')')
+    label_pointer_group = svg.append('g')
+          .attr('class','label_pointer_group')
+          .attr('transform', 'translate('
+            + (x_offset + add_x_offset - svg_location.left)
+            + ',' + (y_offset + add_y_offset - svg_location.top) + ')')
 
     label_pointer_group.append('text').text(text)
-
-    client_rect = d3_selection[0][0].getBoundingClientRect()
-    new_width = client_rect.width
-    width_diff = new_width-start_width
-
     marker_id = 'label_pointer_' + text.split(" ").join("_")
     add_marker(marker_id)
     // FIXME: pixel pushing
     line_y_offset = (position == 'bottom left') ? -14 : -5
-    line_x_start = (position == 'bottom left') ? width_diff/2 : -4
-    offset = (position == 'bottom left') ? -(offset + unit_width/2) : offset - 5
+    line_x_start = (position == 'top right') ? -3 : 45
+    // offset = (position == 'bottom left') ? -(offset + unit_width/2) : offset - 5
     if (position == 'bottom left') {
         line_data = [
             [line_x_start, line_y_offset], 
@@ -76,15 +73,15 @@ var add_label_pointer = function(d3_selection, text, position) {
         ]
     } else if (position == 'top left') {
         line_data = [
-            [offset*1.75, line_y_offset], 
-            [-x_offset + 10, line_y_offset],
-            [-x_offset + 10, offset-5]
+            [line_x_start, line_y_offset], 
+            [offset*1.5 + unit_width/2, line_y_offset],
+            [offset*1.5 + unit_width/2, offset/2]
         ]
     } else if (position == 'top right') {
         line_data = [
             [line_x_start, line_y_offset], 
-            [-x_offset + unit_width/2, line_y_offset],
-            [-x_offset + unit_width/2, offset]
+            [-offset + unit_width/2, line_y_offset],
+            [-offset + unit_width/2, offset/2]
         ]
     } else if (position == 'bottom') {
         line_data = [

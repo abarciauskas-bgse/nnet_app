@@ -95,3 +95,7 @@ div.tooltip {
     border-radius: 8px;     
     pointer-events: none;     
 }
+
+g.label_pointer_group text {
+  text-align: center;
+}
