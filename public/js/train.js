@@ -23,3 +23,4 @@ if (!layer1_visible) {
 
 var current_iter = 0
 var current_iter_notes = []
+$('#myModal').modal()

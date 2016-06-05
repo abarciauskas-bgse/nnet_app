@@ -26,12 +26,6 @@
     opacity: 0.5;
 }
 
-#container {
-    width: 1024px;
-    display: block;
-    margin: 50px auto;
-}
-
 #controls {
     position: relative;
     display: block;

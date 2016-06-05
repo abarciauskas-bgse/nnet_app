@@ -3,10 +3,19 @@ var playing = false
 var two_layers_setup = false
 $('#training-action-button').on('click', function() {
     current_iter_notes = iter_note_sets[current_iter]
+    var info_modal = $('#myModal')
+    svg_position = $('svg').position()
 
     if (current_state == 'entered') {
-        $('#info-text').html("The first step is to gather the training data and initialize random weights. Now we're ready to start training!")
-        $('#training-action-button').html("First step: Input song")
+        setTimeout(function() {
+            $('.modal-dialog').addClass('modal-sm')
+            $('#info-header').html('Network setup')
+            $('#info-text').html("Next we input a song into the network.")
+            $('#training-action-button').html("Input song")
+            info_modal.css('top', $('#song_plot_group').position().top - svg_position.top - song_plot_height)
+            info_modal.css('right', width)
+            info_modal.modal('show')
+        }, default_sub_iter_duration+200)
 
         song.plot()
 

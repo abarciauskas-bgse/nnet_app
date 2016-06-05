@@ -1,12 +1,16 @@
 extends layout
 
 block content
-  <!-- Information Panel -->
-  div(class="panel panel-default", style="width: 54%; position: relative; height: 100px;")
-    div(class="panel-body", id="training-panel")
-        span#info-text Welcome to a #[b recurrent neural network!]
-          Here, we're going to train a network to create new music.
-        button(type="button" class="btn btn-success btn-sm" id="training-action-button" style="position: absolute; right: 20px; bottom:20px;") Setup Network
+  #myModal.modal.fade(role='dialog', data-backdrop = 'false')
+    .modal-dialog
+      .modal-content
+        .modal-header
+          button.close(type='button', data-dismiss='modal')
+          h4.modal-title#info-header Welcome to a #[b recurrent neural network!]
+        .modal-body#info-text
+          p Here, we're going to train a network to create new music.
+        .modal-footer
+          button(type="button" class="btn btn-success btn-sm" id="training-action-button" data-dismiss='modal') Setup Network
 
 block footer_content
   script(src='/js/train.js')

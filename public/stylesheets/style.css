@@ -6,7 +6,11 @@ body {
 #container {
     width: 1024px;
     display: block;
-    margin: 40px auto;
+    margin: 50px auto;
+}
+
+#myModal {
+  top: 300px;
 }
 
 svg {
