@@ -7,14 +7,14 @@ block content
   <!-- Information Panel -->
   //button.btn.btn-info.btn-lg(type='button', data-toggle='modal', data-target='#myModal') Open Modal
   // Modal
-  #myModal.modal.fade(role='dialog')
+  #myModal.modal.fade(role='dialog', data-backdrop='false')
     .modal-dialog
       // Modal content
       .modal-content
         .modal-header
           button.close(type='button', data-dismiss='modal') ×
-          h4.modal-title What is a neuron?
-        .modal-body
+          h4.modal-title#info-header What is a neuron?
+        .modal-body#info-text
           p Neurons are the #[b building blocks] of neural networks. This is a visualization is of a single neuron predicting a point is in the #[b(style="color:#E88923") orange] class or the #[b(style="color:#9F55E8") purple] class.
         .modal-footer
           button.btn.btn-success(type='button', data-dismiss='modal' id="whatisaneuron-action-button") Start training

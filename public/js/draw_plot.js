@@ -96,7 +96,12 @@ var draw_plot = function(yrange, xrange, plot_type, data, group, dot_class, upda
             .attr("r", 3.5)
             .attr("cx", function(d) { return x(d.x1); })
             .attr("cy", function(d) { return y(d.x2); })
-            .style("fill", function(d) { return d.class == 1 ? '#E88923' : '#9F55E8'; });        
+            .style("fill", function(d) { return d.class == 1 ? '#E88923' : '#9F55E8'; })
+          .on('mouseover', (dot_class.indexOf('active') >= 0) ? tip.show : null)
+          .on('mouseleave', (dot_class.indexOf('active') >= 0) ? tip.hide : null)
+          .on('click', function(d, i) {
+              step_update(i)
+          }); 
     }
 
     if (plot_type == 'loss') {

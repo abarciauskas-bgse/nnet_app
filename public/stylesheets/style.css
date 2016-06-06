@@ -15,7 +15,7 @@ body {
 }
 
 body.modal-open {
-  overflow: visible;
+  overflow: hidden;
 }
 
 svg {
@@ -91,18 +91,6 @@ marker {
 #whatisaneuron .weight_container, #whatisaneuron .unit_container {
   stroke: #ededed;
   stroke-width: 1px;
-}
-
-div.tooltip { 
-    position: absolute;     
-    text-align: left;     
-    width: 150px;          
-    height: 28px;         
-    padding: 10px;       
-    font: 12px sans-serif;    
-    border: 0px;    
-    border-radius: 8px;     
-    pointer-events: none;     
 }
 
 g.label_pointer_group text {

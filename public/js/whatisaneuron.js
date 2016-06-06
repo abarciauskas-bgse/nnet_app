@@ -18,6 +18,13 @@ var whatisaneuron_layer0 = whatisaneuron_group.append('g').attr('id', 'layer0')
 add_network('whatisaneuron') // network - whatisaneuron, training or create
 d3.select('#whatisaneuron').attr('transform', 'translate(' + layer_width/2 + ',0)')
 
+/* Initialize tooltip */
+var tip = d3.tip().attr('class', 'd3-tip').html(function(d) {
+    return Math.round(d.x1*100)/100 + ', ' + Math.round(d.x2*100)/100;
+});
+
+/* Invoke the tip in the context of your visualization */
+svg.call(tip)
 
 // LAYOUT VARS FOR whatisaneuron
 var scale = 3// scale of data, -scale to scale
@@ -81,7 +88,7 @@ var max_step_time = 5000
 var min_step_time = 200
 var time_scale = d3.scale.pow().exponent(-1/3).domain([1,1000]).range([max_step_time, min_step_time]);
 var timeouts = [];
-var current_iter = 0;
+var current_iter = 1;
 
 var reset = function(update = false) {
     // Step 0: Simulate traning data
@@ -107,11 +114,15 @@ var reset = function(update = false) {
 var whatisaneuron_width = neuron_width + 3*unit_width + 2*transfer_width + inner_margin
 var plot_width = whatisaneuron_width/3 - inner_margin*2
 var plots_y_offset = neuron_height + 60
+
 var first_plot_group = whatisaneuron_layer0.append("g")
     .attr("id", "first_plot_group")
-    // add 28px to make room for axis
-    // TODO: padding of 20 for padding from top - should be var
     .attr("transform", "translate(0," + plots_y_offset + ")")
+var first_plot_position = $('#first_plot_group').position()
+$('#plot-popover')
+  .css('left', first_plot_position.left)
+  .css('top', first_plot_position.top)
+  .css('position', 'absolute')
 
 // second plot should be on far right
 var second_plot_group = whatisaneuron_layer0.append("g")
@@ -137,6 +148,7 @@ var loss_line_function = d3.svg.line()
         .x(function(d, i) { return loss_xscale(i) })
         .y(function(d, i) { return loss_yscale(d) })
 
+var step_duration = sub_step_time
 var play = function() {
     for (var iter = 0; iter < max_iters*n-n; iter++) {
         current_iter += 1
@@ -181,7 +193,7 @@ d3.select("#step-button").on("click", function() {
 })
 // do more here to clear the data and regenerate it
 d3.select('#refresh-button').on("click", function() {
-    current_iter = 0;
+    current_iter = 1;
     new_data = reset(true);
     short_term_regrets = new_data.short_term_regrets;
     long_term_regrets = new_data.long_term_regrets;
@@ -207,31 +219,22 @@ var current_iter_obj = new CurrentIter('whatisaneuron', initial_data)
 var sub_step_time = 1000
 var total_time = 0;
 $("#myModal").modal()
-var div = d3.select("body").append("div")   
-    .attr("class", "tooltip")               
-    .style("opacity", 0);
 
 var curr_state = 'entered'
 $('#whatisaneuron-action-button').on('click', function() {
+    var info_modal = $('#myModal')
+
     if (curr_state == 'entered') {
-      current_iter += 1;
-      update_current_point(current_iter)
-      $('#whatisaneuron-action-button').html('Next step')
-      $('#myModal .modal-body').html('Weights are initialized randomly')
-      // Maybe add a timer here or if they try to click on anything?
-      $('.dot.dot-active.current-point').on('mouseover', function() {
-          $("#myModal").modal()
-          curr_state = 'first_point'
-      })
-    }
-    // current_iter = iter
-    // //d3.selectAll('#current-iteration').html(current_iter)
-    // iter_weights = all_weights[iter]
-    // iter_loss = long_term_regrets[iter]
-    // update_current_point(iter)
-    // update_shaded(iter_weights, iter)
-    // update_loss(short_term_regrets, iter_loss, iter)
-    // currentx_data = current_data[iter%n]
-    // x = [currentx_data.x1, currentx_data.x2]
-    // transfer(x, iter_weights)    
+        current_iter += 1;
+        curr_state = 'first_point'
+        setTimeout(function() {
+            $('.modal-dialog').addClass('modal-sm')
+            $('#info-header').html('Training data')
+            $('#info-text').html("Click a point to train")
+            $('#training-action-button').html("Ok")
+            info_modal.css('top', first_plot_position.top)
+            info_modal.css('right', width - first_plot_position.left)
+            info_modal.modal('show')
+        }, 200)
+    }   
 });

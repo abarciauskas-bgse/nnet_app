@@ -13,6 +13,10 @@
     opacity: 0.2;
 }
 
+.dot:hover {
+  opacity: 1;
+}
+
 #second_plot_group .dot-active {
     opacity: 1;
 }
