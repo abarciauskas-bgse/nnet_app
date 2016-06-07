@@ -19,12 +19,16 @@ add_network('whatisaneuron') // network - whatisaneuron, training or create
 d3.select('#whatisaneuron').attr('transform', 'translate(' + layer_width/2 + ',0)')
 
 /* Initialize tooltip */
-var tip = d3.tip().attr('class', 'd3-tip').html(function(d) {
+var data_point_tip = d3.tip().attr('class', 'd3-tip').html(function(d) {
     return Math.round(d.x1*100)/100 + ', ' + Math.round(d.x2*100)/100;
+});
+var outputs_tip = d3.tip().attr('class', 'd3-tip').html(function(d, i) {
+    return Math.round(((i == 0) ? (1 - d) : d)*100)/100
 });
 
 /* Invoke the tip in the context of your visualization */
-svg.call(tip)
+svg.call(data_point_tip)
+svg.call(outputs_tip)
 
 // LAYOUT VARS FOR whatisaneuron
 var scale = 3// scale of data, -scale to scale
@@ -48,13 +52,13 @@ var threshold_top_offset = inner_margin
 var transfer_multiply_group_1 = unit_sets[0].d3_group.append('svg:g')
     .attr('id', 'transfer_group_1')
     .attr('class', 'transfer_group_multiply')
-    .attr('width', transfer_multiply_height)
+    .attr('width', transfer_multiply_height - unit_width)
     .attr('height', transfer_multiply_height)
 
 var transfer_multiply_group_2 = unit_sets[0].d3_group.append('svg:g')
     .attr('id', 'transfer_group_2')
     .attr('class', 'transfer_group_multiply')
-    .attr('width', transfer_multiply_height)
+    .attr('width', transfer_multiply_height - unit_width)
     .attr('height', transfer_multiply_height)
     .attr('transform', 'translate(0,' + unit_height + ')')
 
@@ -150,6 +154,7 @@ var loss_line_function = d3.svg.line()
 
 var step_duration = sub_step_time
 var play = function() {
+    walkthru = false
     for (var iter = 0; iter < max_iters*n-n; iter++) {
         current_iter += 1
         step_duration = time_scale(current_iter)
@@ -220,21 +225,82 @@ var sub_step_time = 1000
 var total_time = 0;
 $("#myModal").modal()
 
-var curr_state = 'entered'
-$('#whatisaneuron-action-button').on('click', function() {
-    var info_modal = $('#myModal')
+var info_modal = $('#myModal')
 
-    if (curr_state == 'entered') {
-        current_iter += 1;
-        curr_state = 'first_point'
-        setTimeout(function() {
-            $('.modal-dialog').addClass('modal-sm')
-            $('#info-header').html('Training data')
-            $('#info-text').html("Click a point to train")
-            $('#training-action-button').html("Ok")
-            info_modal.css('top', first_plot_position.top)
-            info_modal.css('right', width - first_plot_position.left)
-            info_modal.modal('show')
-        }, 200)
-    }   
+var ModalData = function(header, body, button_text, top, right) {
+    this.header = header;
+    this.body = body;
+    this.button_text = button_text;
+    this.top = top;
+    this.right = right;
+}
+
+ModalData.prototype.show = function(delay = 300) {
+    var modal_object = this;
+    setTimeout(function() {
+        if (modal_object.header != null) { $('#info-header').html(modal_object.header) }
+        if (modal_object.body != null) { $('#info-text').html(modal_object.body.toString()) }
+        if (modal_object.button_text != null) { $('#whatisaneuron-action-button').html(modal_object.button_text) }
+        info_modal.css('top', modal_object.top)
+        info_modal.css('right', modal_object.right)
+        info_modal.modal('show')
+    }, delay)    
+}
+
+var pick_point_modal = new ModalData(
+    'Training', 
+    'Click a point to train',
+    'Ok',
+    first_plot_position.top - plot_width, width - first_plot_position.left)
+
+var tmg_position = $('#' + transfer_multiply_group_1.attr('id')).position()
+var sub_step0_modal = new ModalData(
+    'Training', 
+    'Step 1: The data is multiplied by a set of weights. Click the weights to sum the weighted inputs.',
+    'Ok',
+    tmg_position.top, width - tmg_position.left/2)
+
+var tag_position = $('#' + transfer_addition_group.attr('id')).position()
+var sub_step2_modal = new ModalData(
+    'Training', 
+    'Step 2: The weighted inputs are summed to a single value. <b>Click the sum</b> to see the output of the neuron.',
+    'Ok',
+    tag_position.top, width - tag_position.left/2)
+
+var sub_step3_modal = new ModalData(
+    'Training', 
+    'Final step: The threshold function outputs a value between <b>0</b> and <b>1</b>. Click the threshold to see the output.',
+    'Ok',
+    tag_position.top, width - threshold_position)
+
+var whatisaneuron_pos = $('#whatisaneuron').position
+var output_modal = new ModalData(
+    'Output',
+    'Hover over the bars to see the probability of each class, <b style="color:#E88923">orange</b> and <b style="color:#9F55E8">purple</b>. This is the output of the neuron. Click one of the outputs to see the true class.',
+    'Ok',
+    tag_position.top, width - whatisaneuron_pos.left)
+
+var target_modal = new ModalData(
+    'Target',
+    'The difference between the probability of the class is used to update the weights to better fit the data. Click the loss plot to finish.',
+    'Ok',
+    tag_position.top, width - whatisaneuron_pos.left)
+
+var finished_walkthru_modal = new ModalData(
+    'Done with first iteration!',
+    'Congratulations! You just trained a neuron. Use the controls to train on the rest of the data.',
+    'Ok',
+    tag_position.top, width/2)
+
+var points_clicked = 0
+var walkthru = false
+var info_modal = $('#myModal')
+$('#whatisaneuron-action-button').on('click', function() {
+    walkthru = true
+    current_iter += 1;
+    setTimeout(function() { $('.modal-dialog').addClass('modal-sm') }, 200)
+    if ($('#myModal').data().state == undefined) {
+        pick_point_modal.show()
+        $('#myModal').data('state', 'entered')
+    }
 });

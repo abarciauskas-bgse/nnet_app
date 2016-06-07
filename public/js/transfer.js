@@ -264,19 +264,19 @@ var threshold = function(final_transfer_value, final_output_value) {
           .attr("class",'link')
           .style('fill', '#ddd')
           .style('stroke', 'none')
-      .transition().delay(sub_step_time*5).duration(sub_step_time)
+      .transition().delay((walkthru) ? sub_step_time : sub_step_time*5).duration(sub_step_time)
           .attr('points', function() {
               return update_poly.map(function(d) { return [d.x, d.y].join(',')}).join(' ')
           });
 
-    transfer_addition_group.selectAll('.wxsum_start_bar').transition().delay(sub_step_time*4).style('opacity',1)
+    transfer_addition_group.selectAll('.wxsum_start_bar').transition().delay((walkthru) ? 0 : sub_step_time*4).style('opacity',1)
         .transition()
         .delay(sub_step_time*5)
         .duration(sub_step_time)
         .style('opacity', 0.2)
 
     //move bar to threshold and shrink to final value
-    transfer_addition_group.selectAll('.wxsum_bar').transition().delay(sub_step_time*5).duration(sub_step_time)
+    transfer_addition_group.selectAll('.wxsum_bar').transition().delay((walkthru) ? sub_step_time : sub_step_time*5).duration(sub_step_time)
         .attr('x', threshold_position)
         .attr('opacity', 1)
         .attr('height', transfer_multiply_yscale(final_output_value))
@@ -288,9 +288,53 @@ var threshold = function(final_transfer_value, final_output_value) {
 }
 
 var activate = function() {
-    d3.selectAll('.wxsum_bar').transition().delay(sub_step_time*4).duration(sub_step_time).style('opacity', 1)
+    d3.selectAll('.wxsum_bar').transition().delay(walkthru ? 0 : sub_step_time*4).duration(sub_step_time).style('opacity', 1)
 }
 
+var sub_step0 = function(data1, data2, final_data_start, final_data) {
+    addwx_multiply(data1, transfer_multiply_group_1, 1)
+    addwx_multiply(data2, transfer_multiply_group_2, 2)
+    addwx_multiply(final_data_start, transfer_addition_group)
+    addwx_multiply(final_data, transfer_addition_group)  
+}
+
+var sub_step1 = function(x1_start_data, x2_start_data) {
+    draw_multiply_links(x1_start_data, transfer_group_1)
+    draw_multiply_links(x2_start_data, transfer_group_2)
+    draw_multiply_links(x1_start_data, transfer_group_1, true)
+    draw_multiply_links(x2_start_data, transfer_group_2, true)
+    multiply(1)
+    multiply(2)    
+}
+
+var sub_step2 = function(wx1_start_data, wx2_start_data, w2, x2, shift, shift_sign) {
+    draw_addition_links(wx1_start_data, transfer_group_1, 1)
+    draw_addition_links(wx2_start_data, transfer_group_2, 2)
+    draw_addition_links(wx1_start_data, transfer_group_1, 1, 'first')
+    draw_addition_links(wx2_start_data, transfer_group_2, 2, 'first')
+    draw_addition_links(wx1_start_data, transfer_group_1, 1, 'second', w2*x2)
+    move_to_addition(1)
+    move_to_addition(2)
+    add(shift, shift_sign)     
+}
+
+var sub_step3 = function(final_transfer_value, final_output_value) {
+    activate()
+    threshold(final_transfer_value, final_output_value)  
+}
+
+var highlight_outputs = function(final_output_value, delay) {
+    // Update prediction
+    colors = ['#9F55E8','#E88923']
+    var outputs = d3.select('#whatisaneuron_unit_set_output_L0').selectAll('rect').data([final_output_value, final_output_value])
+    outputs.transition().delay(delay).duration(sub_step_time) // delay was sub_step_tim*5
+           .style('fill-opacity', function(d, i) {
+                return Math.max(0.05, (i == 0) ? (1 - final_output_value) : final_output_value)
+            })
+           .style('fill', function(d, i) { return colors[i] })
+    outputs.on('mouseover', outputs_tip.show)
+           .on('mouseleave', outputs_tip.hide)
+}
 var transfer = function(x, w) {
     d3.selectAll('.multiply_bar').remove()
     d3.selectAll('.link').remove()
@@ -300,6 +344,7 @@ var transfer = function(x, w) {
     var x = (x == undefined) ? runifo(2, 3) : x,
         x1 = x[0],
         x2 = x[1],
+        true_class = x[2],
         w = (x == undefined) ? runifo(2, 3) : w,
         w1 = w[0],
         w2 = w[1],
@@ -325,33 +370,57 @@ var transfer = function(x, w) {
     data1 = x1_data.concat(w1_data).concat(wx1_data).concat(x1_start_data).concat(wx1_start_data)
     data2 = x2_data.concat(w2_data).concat(wx2_data).concat(x2_start_data).concat(wx2_start_data)
     
-    addwx_multiply(data1, transfer_multiply_group_1, 1)
-    addwx_multiply(data2, transfer_multiply_group_2, 2)
-    addwx_multiply(final_data_start, transfer_addition_group)
-    addwx_multiply(final_data, transfer_addition_group)
+    if (!walkthru) {
+        sub_step0(data1, data2, final_data_start, final_data)
+        sub_step1(x1_start_data, x2_start_data)
+        sub_step2(wx1_start_data, wx2_start_data, w2, x2, shift, shift_sign)
+        sub_step3(final_transfer_value, final_output_value)
+        highlight_outputs(final_output_value, sub_step_time*5, true_class)
+    } else if (walkthru) {
+        sub_step0_modal.show()
+        setTimeout(function() {
+            sub_step0(data1, data2, final_data_start, final_data)
+            sub_step1(x1_start_data, x2_start_data)
+        }, 500)
 
-    draw_multiply_links(x1_start_data, transfer_group_1)
-    draw_multiply_links(x2_start_data, transfer_group_2)
-    draw_multiply_links(x1_start_data, transfer_group_1, true)
-    draw_multiply_links(x2_start_data, transfer_group_2, true)
+        // FIXME
+        $('#' + transfer_multiply_group_1.attr('id')).on('click', function() {
+            sub_step2_modal.show()
+            setTimeout(function() {
+                sub_step2(wx1_start_data, wx2_start_data, w2, x2, shift, shift_sign)                    
+            }, 500)
+            $('#' + transfer_multiply_group_1.attr('id')).unbind('click');
 
-    draw_addition_links(wx1_start_data, transfer_group_1, 1)
-    draw_addition_links(wx2_start_data, transfer_group_2, 2)
-    draw_addition_links(wx1_start_data, transfer_group_1, 1, 'first')
-    draw_addition_links(wx2_start_data, transfer_group_2, 2, 'first')
-    draw_addition_links(wx1_start_data, transfer_group_1, 1, 'second', w2*x2)
+            $('.wx_bar').on('click', function() {
+                sub_step3_modal.show()
+                setTimeout(function() {
+                    sub_step3(final_transfer_value, final_output_value)
+                }, 500)    
+            })
+        })
 
-    multiply(1)
-    multiply(2)
-    move_to_addition(1)
-    move_to_addition(2)
-    add(shift, shift_sign)
-    activate()
-    threshold(final_transfer_value, final_output_value)
+        $('#threshold_bar_top').on('click', function() {
+            output_modal.show()
+            setTimeout(function() {
+                highlight_outputs(final_output_value, 0, true_class)
+            }, 500)
+        })
 
-    colors = ['#9F55E8','#E88923']
-    d3.select('#whatisaneuron_unit_set_output_L0').selectAll('rect')
-      .transition().delay(sub_step_time*5).duration(sub_step_time)
-      .style('fill-opacity', function(d, i) { return Math.max(0.2, (i == 0) ? (1 - final_output_value) : final_output_value) })
-      .style('fill', function(d, i) { return colors[i] })
+        $('#whatisaneuron_unit_set_output_L0').on('click', function() {
+            target_modal.show()
+            setTimeout(function() {
+                iter = current_iter
+                update_current_point(iter)
+                iter_weights = all_weights[iter]
+                iter_loss = long_term_regrets[iter]
+                update_shaded(iter_weights, iter)
+                update_loss(short_term_regrets, iter_loss, iter)                
+            }, 500)
+        })
+
+        $('#losses_plot_group').on('click', function() {
+            current_iter = 1
+            finished_walkthru_modal.show()
+        })
+    }
 }

@@ -14,7 +14,7 @@ var update_loss = function(regrets, loss, iter) {
     regrets.shift();
 }
 
-var update_current_point = function(iter, tooltip = false) {
+var update_current_point = function(iter) {
     var points = d3.selectAll('#first_plot_group .dot')
     points.classed('current-point', false)
     points.attr('r', 3.5)
@@ -24,8 +24,12 @@ var update_current_point = function(iter, tooltip = false) {
     klass = current_point.data()[0].class
     colors = ['#9F55E8','#E88923']
     d3.select('#whatisaneuron_unit_set_target_L0').selectAll('rect')
-      .transition().delay(sub_step_time*5).duration(sub_step_time)
+      .transition().delay(walkthru ? 0 : sub_step_time*5).duration(sub_step_time)
       .style('fill', function(d, i) { return i == klass ? colors[i] : 'white' })
+    // highlight new point for first n iters
+    points = d3.selectAll('#second_plot_group .dot')[0]
+    if (iter<n) { d3.select(points[iter]).transition()
+        .attr('class', 'dot dot-active') }      
 }
 
 var step_update = function(iter) {
@@ -44,8 +48,4 @@ var step_update = function(iter) {
     currentx_data = current_data[iter%n]
     x = [currentx_data.x1, currentx_data.x2]
     transfer(x, iter_weights)
-    // highlight new point for first n iters
-    points = d3.selectAll('#second_plot_group .dot')[0]
-    if (iter<n) { d3.select(points[iter]).transition()
-        .attr('class', 'dot dot-active') }
 }

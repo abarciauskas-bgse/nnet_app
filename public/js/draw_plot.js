@@ -97,10 +97,16 @@ var draw_plot = function(yrange, xrange, plot_type, data, group, dot_class, upda
             .attr("cx", function(d) { return x(d.x1); })
             .attr("cy", function(d) { return y(d.x2); })
             .style("fill", function(d) { return d.class == 1 ? '#E88923' : '#9F55E8'; })
-          .on('mouseover', (dot_class.indexOf('active') >= 0) ? tip.show : null)
-          .on('mouseleave', (dot_class.indexOf('active') >= 0) ? tip.hide : null)
+          .on('mouseover', (dot_class.indexOf('active') >= 0) ? data_point_tip.show : null)
+          .on('mouseleave', (dot_class.indexOf('active') >= 0) ? data_point_tip.hide : null)
           .on('click', function(d, i) {
-              step_update(i)
+              if (dot_class.indexOf('active') >= 0) {
+                  $('#myModal').data('state', 'point-selected')
+                  currentx_data = current_data[i%n]
+                  x = [currentx_data.x1, currentx_data.x2, currentx_data.class]
+                  w = all_weights[i]
+                  transfer(x, w)
+              }
           }); 
     }
 
