@@ -10,10 +10,9 @@ var shade_plot = function(yrange, xrange, wts, scale, group, update) {
     y.domain([-scale,scale]).nice();
 
     var area = d3.svg.area()
-      .x(function(d) { console.log(x(d[0])); return x(d[0]); })
+      .x(function(d) { return x(d[0]); })
       .y0(yrange[1])
       .y1(function(d) {
-        console.log(y(d[1])); 
         yval = y(d[1])
         return yval;
       });

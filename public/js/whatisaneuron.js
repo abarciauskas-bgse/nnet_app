@@ -89,7 +89,7 @@ var eta = 1
 var n = 100 // number of training points
 var max_iters = 100
 var max_step_time = 5000
-var min_step_time = 200
+var min_step_time = 1000
 var time_scale = d3.scale.pow().exponent(-1/3).domain([1,1000]).range([max_step_time, min_step_time]);
 var timeouts = [];
 var current_iter = 1;
@@ -249,14 +249,14 @@ ModalData.prototype.show = function(delay = 300) {
 
 var pick_point_modal = new ModalData(
     'Training', 
-    'Click a point to train',
+    '<b>Click a point</b> to train the network.',
     'Ok',
-    first_plot_position.top - plot_width, width - first_plot_position.left)
+    first_plot_position.top - plot_width, width - threshold_position)
 
 var tmg_position = $('#' + transfer_multiply_group_1.attr('id')).position()
 var sub_step0_modal = new ModalData(
     'Training', 
-    'Step 1: The data is multiplied by a set of weights. Click the weights to sum the weighted inputs.',
+    'Step 1: The data is multiplied by a set of weights. <b>Click the weights</b> to sum the weighted inputs.',
     'Ok',
     tmg_position.top, width - threshold_position)
 
@@ -269,28 +269,28 @@ var sub_step2_modal = new ModalData(
 
 var sub_step3_modal = new ModalData(
     'Training', 
-    'Final step: The threshold function outputs a value between <b>0</b> and <b>1</b>. Click the threshold to see the output.',
+    'Final step: The threshold function outputs a value between <b>0</b> and <b>1</b>. <b>Click the threshold</b> to see the output.',
     'Ok',
     tag_position.top, width - threshold_position)
 
 var whatisaneuron_pos = $('#whatisaneuron').position
 var output_modal = new ModalData(
     'Output',
-    'Hover over the bars to see the probability of each class, <b style="color:#E88923">orange</b> and <b style="color:#9F55E8">purple</b>. This is the output of the neuron. Click one of the outputs to see the true class.',
+    'Hover over the bars to see the probability of each class, <b style="color:#E88923">orange</b> and <b style="color:#9F55E8">purple</b>. This is the output of the neuron. <b>Click one of the outputs</b> to see the true class.',
     'Ok',
     tag_position.top, width - whatisaneuron_pos.left)
 
 var target_modal = new ModalData(
     'Target',
-    'The difference between the probability of the class is used to update the weights to better fit the data. Click the loss plot to finish.',
+    'The difference between the probability of the class is used to update the weights to better fit the data. <b>Click the loss label</b> to finish.',
     'Ok',
     tag_position.top, width - whatisaneuron_pos.left)
 
 var finished_walkthru_modal = new ModalData(
     'Done training!',
-    'Congratulations! You just trained a neuron. Use the controls to train on the rest of the data.',
+    'Congratulations! You just trained a neuron. <b>Use the controls</b> to train on the rest of the data.',
     'Ok',
-    tag_position.top, width/2)
+    tag_position.top, width - whatisaneuron_pos.left)
 
 var points_clicked = 0
 var walkthru = false

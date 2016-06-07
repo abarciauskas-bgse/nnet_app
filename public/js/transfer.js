@@ -334,7 +334,7 @@ var highlight_outputs = function(final_output_value, delay) {
     outputs.on('mouseover', outputs_tip.show)
            .on('mouseleave', outputs_tip.hide)
 }
-var transfer = function(x, w) {
+var transfer = function(x, w, iter = current_iter) {
     d3.selectAll('.multiply_bar').remove()
     d3.selectAll('.link').remove()
     d3.selectAll('.addition_link').remove()
@@ -392,7 +392,7 @@ var transfer = function(x, w) {
 
             }, 500)
             setTimeout(function() {
-               add_label_pointer('.wx_bar', 'sum', 'bottom', 0, 40)
+               add_label_pointer('.wx_bar', 'sum', 'bottom', 0, 20, false)
             }, 600 + 2*sub_step_time)            
             $('#' + transfer_multiply_group_1.attr('id')).unbind('click');
 
@@ -416,7 +416,6 @@ var transfer = function(x, w) {
         $('#whatisaneuron_unit_set_output_L0').on('click', function() {
             target_modal.show()
             setTimeout(function() {
-                iter = current_iter
                 update_current_point(iter)
                 iter_weights = all_weights[iter]
                 iter_loss = long_term_regrets[iter]

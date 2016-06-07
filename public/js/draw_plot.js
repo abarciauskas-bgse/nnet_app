@@ -101,14 +101,13 @@ var draw_plot = function(yrange, xrange, plot_type, data, group, dot_class, upda
           .on('mouseleave', (dot_class.indexOf('active') >= 0) ? data_point_tip.hide : null)
           .on('click', function(d, i) {
               if (dot_class.indexOf('active') >= 0) {
-                  current_iter = i
                   d3.selectAll('#first_plot_group .dot').classed('current-point', false).attr('r', 3.5)
                   d3.select(this).classed('current-point', true).attr('r',6)
                   $('#myModal').data('state', 'point-selected')
                   currentx_data = current_data[i%n]
                   x = [currentx_data.x1, currentx_data.x2, currentx_data.class]
                   w = all_weights[i]
-                  transfer(x, w)
+                  transfer(x, w, i)
               }
           }); 
     }

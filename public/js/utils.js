@@ -22,7 +22,7 @@ var layer_group = function(object, network) {
 var line_function = d3.svg.line().interpolate("basis");
 
 // FIXME: this is scary stuff
-var add_label_pointer = function(d3_selector, text, position, add_x_offset = 0, add_y_offset = 0) {
+var add_label_pointer = function(d3_selector, text, position, add_x_offset = 0, add_y_offset = 0, add_pointer = true) {
     marker_id = 'label_pointer_' + text.split(" ").join("_")
     if ($('#' + marker_id).length > 0) { return true }
     offset = 30
@@ -99,7 +99,8 @@ var add_label_pointer = function(d3_selector, text, position, add_x_offset = 0, 
             .attr("d", line_function(line_data))
             .attr('fill', 'none')
             .attr('stroke', medium_grey)
-            .attr("marker-end", "url(#" + marker_id + ")"); 
+            .attr("marker-end", "url(#" + marker_id + ")")
+            .attr('visibility', add_pointer ? 'visible' : 'hidden'); 
 
 }
 
