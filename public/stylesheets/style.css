@@ -81,6 +81,7 @@ marker {
 
 .nav-tabs>li {
     float: right;
+    margin-bottom: -4px;
 }
 
 #whatisaneuron .weight, #whatisaneuron .unit {
