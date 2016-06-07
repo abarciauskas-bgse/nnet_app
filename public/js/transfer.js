@@ -82,7 +82,6 @@ var draw_multiply_links = function(node_data, group, update) {
     } else {
         d3.select(group).selectAll('.link').transition().duration(sub_step_time)
             .attr('d', function(d) {
-                //console.log(lineFunction(lineData(d, true)))
                 return lineFunction(lineData(d, true))
             })
     }
@@ -122,10 +121,10 @@ var draw_addition_links = function(node_data, group, group_indx, update, shift) 
         .attr("stroke", "#333")
         .style("stroke-width", function(d) { return height_with_padding(d) })                   
     } else if (update == 'first') {
-        d3.select(group).selectAll('.addition_link').transition().delay(sub_step_time*2).duration(sub_step_time)
+        d3.select(group).selectAll('.addition_link').transition().delay(walkthru ? 0 : sub_step_time*2).duration(sub_step_time)
            .attr('d', function(d) { return lineFunction(lineData(d, 'first')) })
     } else if (update == 'second') {
-        d3.select(group).selectAll('.addition_link.group1').transition().delay(sub_step_time*3).duration(sub_step_time)
+        d3.select(group).selectAll('.addition_link.group1').transition().delay(walkthru ? sub_step_time : sub_step_time*3).duration(sub_step_time)
            .attr('d', function(d) { return lineFunction(lineData(d, 'second', shift)) })
     }
 }
@@ -133,7 +132,7 @@ var draw_addition_links = function(node_data, group, group_indx, update, shift) 
 var height_with_padding = function(d) {
     this_height = Math.abs(transfer_multiply_yscale(d.value))
     var padding = -2
-    return ((this_height + padding) > 0 ? (this_height + padding) : 0)      
+    return ((this_height + padding) > 0 ? (this_height + padding) : 0.2)      
 }
 // function to add x and w to transfer multiply group plot
 var addwx_multiply = function(data, group, group_indx) {
@@ -222,7 +221,7 @@ var multiply = function(group_indx) {
 // function to transition wx bars to the transfer addition space
 var move_to_addition = function(group_indx) {
     d3.selectAll('.wx_start_bar').transition().delay(sub_step_time*2).duration(sub_step_time).style('opacity', 0.2)
-    d3.selectAll('.wx_bar.multiply_bar.group' + group_indx + '_bar').transition().delay(sub_step_time*2).duration(sub_step_time)
+    d3.selectAll('.wx_bar.multiply_bar.group' + group_indx + '_bar').transition().delay(walkthru ? 0 : sub_step_time*2).duration(sub_step_time)
       .attr('x', addition_position)
       .attr('y', function(d) { return yposition_addition(d, group_indx) })
 }
@@ -230,14 +229,14 @@ var move_to_addition = function(group_indx) {
 var add = function(shift, shift_sign) {
     // select all the bars in the first group and shift them up or down depending on the value of the second group
     var shift_scaled = transfer_multiply_yscale(shift)
-    d3.selectAll('.wx_bar.group1_bar').transition().delay(sub_step_time*3).duration(sub_step_time)
+    d3.selectAll('.wx_bar.group1_bar').transition().delay(walkthru ? sub_step_time : sub_step_time*3).duration(sub_step_time)
         .attr('y', function(d) {
             return yposition_addition(d, 1) - shift_scaled
         })
     if (shift_sign != -1) {
-        d3.selectAll('.wx_bar.group2_bar').transition().delay(sub_step_time*4).duration(sub_step_time).style('opacity', 0.2)
+        d3.selectAll('.wx_bar.group2_bar').transition().delay(walkthru ? sub_step_time : sub_step_time*4).duration(sub_step_time).style('opacity', 0.2)
     }
-    d3.selectAll('.wx_bar').transition().delay(sub_step_time*4).duration(sub_step_time).style('opacity', 0.2)
+    d3.selectAll('.wx_bar').transition().delay(walkthru ? sub_step_time*2 : sub_step_time*4).duration(sub_step_time).style('opacity', 0.2)
 }
 
 // draw the thrshold transition polygon
@@ -381,21 +380,28 @@ var transfer = function(x, w) {
         setTimeout(function() {
             sub_step0(data1, data2, final_data_start, final_data)
             sub_step1(x1_start_data, x2_start_data)
+            add_label_pointer('#whatisaneuron_unit_set_input_L0', 'inputs', 'top left')
+            add_label_pointer('#whatisaneuron_weight_set_xw_L0_N0', 'weights', 'top left')
         }, 500)
 
         // FIXME
         $('#' + transfer_multiply_group_1.attr('id')).on('click', function() {
             sub_step2_modal.show()
             setTimeout(function() {
-                sub_step2(wx1_start_data, wx2_start_data, w2, x2, shift, shift_sign)                    
+                sub_step2(wx1_start_data, wx2_start_data, w2, x2, shift, shift_sign)
+
             }, 500)
+            setTimeout(function() {
+               add_label_pointer('.wx_bar', 'sum', 'bottom', 0, 40)
+            }, 600 + 2*sub_step_time)            
             $('#' + transfer_multiply_group_1.attr('id')).unbind('click');
 
             $('.wx_bar').on('click', function() {
                 sub_step3_modal.show()
                 setTimeout(function() {
                     sub_step3(final_transfer_value, final_output_value)
-                }, 500)    
+                }, 500)  
+                add_label_pointer('#threshold_bar_top', 'threshold', 'top right')  
             })
         })
 
@@ -404,6 +410,7 @@ var transfer = function(x, w) {
             setTimeout(function() {
                 highlight_outputs(final_output_value, 0, true_class)
             }, 500)
+            add_label_pointer('#whatisaneuron_unit_set_output_L0', 'outputs', 'top right')
         })
 
         $('#whatisaneuron_unit_set_output_L0').on('click', function() {
@@ -414,12 +421,12 @@ var transfer = function(x, w) {
                 iter_weights = all_weights[iter]
                 iter_loss = long_term_regrets[iter]
                 update_shaded(iter_weights, iter)
-                update_loss(short_term_regrets, iter_loss, iter)                
+                update_loss(short_term_regrets, iter_loss, iter)
+                add_label_pointer('#whatisaneuron_unit_set_target_L0', 'outputs', 'top right')            
             }, 500)
         })
 
         $('#losses_plot_group').on('click', function() {
-            current_iter = 1
             finished_walkthru_modal.show()
         })
     }

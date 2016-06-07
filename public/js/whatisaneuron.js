@@ -37,7 +37,7 @@ var transfer_addition_height = transfer_multiply_height*2
 var transfer_multiply_xscale = d3.scale.linear()
     .range([0, transfer_multiply_height]);
 var transfer_multiply_yscale = d3.scale.linear();
-transfer_multiply_yscale.domain([-scale,scale]);
+transfer_multiply_yscale.domain([-scale,scale]).nice(30);
 transfer_multiply_yscale.range([-transfer_multiply_height/2, transfer_multiply_height/2]).clamp(true);
 var wtoffset = transfer_width + inner_margin + unit_width
 var barwidth = unit_width
@@ -74,13 +74,13 @@ neurons[0].group.append('svg:rect')
     .attr('class', 'negative_region')
     .attr('x', threshold_offset-barwidth)
     .attr('y', threshold_top_offset)
-    .attr('height', transfer_multiply_height - transfer_multiply_yscale(1))
+    .attr('height', transfer_multiply_height - transfer_multiply_yscale(1) - 2) // make room for stroke
     .attr('width', threshold_width)
 neurons[0].group.append('svg:rect')
     .attr('id', 'threshold_bar_bottom')
     .attr('class', 'negative_region')
     .attr('x', threshold_offset-barwidth)
-    .attr('y', threshold_top_offset + unit_height)
+    .attr('y', threshold_top_offset + unit_height + 2) // make room for stroke
     .attr('height', transfer_multiply_height)
     .attr('width', threshold_width)
 
@@ -258,14 +258,14 @@ var sub_step0_modal = new ModalData(
     'Training', 
     'Step 1: The data is multiplied by a set of weights. Click the weights to sum the weighted inputs.',
     'Ok',
-    tmg_position.top, width - tmg_position.left/2)
+    tmg_position.top, width - threshold_position)
 
 var tag_position = $('#' + transfer_addition_group.attr('id')).position()
 var sub_step2_modal = new ModalData(
     'Training', 
     'Step 2: The weighted inputs are summed to a single value. <b>Click the sum</b> to see the output of the neuron.',
     'Ok',
-    tag_position.top, width - tag_position.left/2)
+    tag_position.top, width - threshold_position)
 
 var sub_step3_modal = new ModalData(
     'Training', 
@@ -287,7 +287,7 @@ var target_modal = new ModalData(
     tag_position.top, width - whatisaneuron_pos.left)
 
 var finished_walkthru_modal = new ModalData(
-    'Done with first iteration!',
+    'Done training!',
     'Congratulations! You just trained a neuron. Use the controls to train on the rest of the data.',
     'Ok',
     tag_position.top, width/2)
@@ -297,7 +297,6 @@ var walkthru = false
 var info_modal = $('#myModal')
 $('#whatisaneuron-action-button').on('click', function() {
     walkthru = true
-    current_iter += 1;
     setTimeout(function() { $('.modal-dialog').addClass('modal-sm') }, 200)
     if ($('#myModal').data().state == undefined) {
         pick_point_modal.show()

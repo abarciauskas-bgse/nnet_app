@@ -1,5 +1,7 @@
+var shaded_once = false
 var update_shaded = function(weights, iter) {
-    shade_plot([0,plot_width], [0,plot_width], weights, scale, second_plot_group, iter == 1 ? false : true)
+    shade_plot([0,plot_width], [0,plot_width], weights, scale, second_plot_group, shaded_once)
+    shaded_once = true
 }
 
 var update_loss = function(regrets, loss, iter) {

@@ -11,13 +11,13 @@ var draw_plot = function(yrange, xrange, plot_type, data, group, dot_class, upda
     // xAxis
     var xAxis = d3.svg.axis()
         .scale(x)
-        .ticks(plot_type == 'loss' ? 0 : 5)
+        .ticks(plot_type == 'loss' ? 0 : 4)
         .orient("bottom");
 
     // yAxis
     var yAxis = d3.svg.axis()
         .scale(y)
-        .ticks(5)
+        .ticks(plot_type == 'loss' ? 3 : 4)
         .orient("left");
 
     if (plot_type == 'data') {
@@ -101,6 +101,9 @@ var draw_plot = function(yrange, xrange, plot_type, data, group, dot_class, upda
           .on('mouseleave', (dot_class.indexOf('active') >= 0) ? data_point_tip.hide : null)
           .on('click', function(d, i) {
               if (dot_class.indexOf('active') >= 0) {
+                  current_iter = i
+                  d3.selectAll('#first_plot_group .dot').classed('current-point', false).attr('r', 3.5)
+                  d3.select(this).classed('current-point', true).attr('r',6)
                   $('#myModal').data('state', 'point-selected')
                   currentx_data = current_data[i%n]
                   x = [currentx_data.x1, currentx_data.x2, currentx_data.class]

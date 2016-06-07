@@ -27,7 +27,7 @@
 
 .area {
     stroke-width: 0;
-    opacity: 0.5;
+    opacity: 0.15;
 }
 
 #controls {
@@ -93,7 +93,7 @@
 }
 
 svg {
-    fill: #eee;
+    fill: #333;
 }
 
 #title h2 {
