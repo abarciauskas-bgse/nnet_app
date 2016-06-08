@@ -1,6 +1,42 @@
 var current_state = 'entered'
 var playing = false
 var two_layers_setup = false
+
+var timeouts = [];
+var play = function() {
+    playing = true
+    for (i = 1; i < (song.sequence_length-current_iter); i++) {
+        timeouts.push(setTimeout(function(){ iter(); }, i*default_sub_iter_duration));
+    }
+    current_state = 'playing'    
+}
+
+var grow_all_layer1_lines = function() {
+    xw_lines = _.where(tlines, {type: 'xw', layer: 1})
+    xw_lines.forEach(function(tl) { return tl.grow() })
+
+    wxh_lines = _.where(tlines, {type: 'wxh', layer: 1})
+    wxh_lines.forEach(function(tl) {
+        memory_cells_open_close('left', 1)
+        tl.grow()
+    })
+
+    hh_lines = _.where(tlines, {type: 'hh', layer: 1})
+    hh_lines.forEach(function(tl) {
+        memory_cells_open_close('right', 1)
+        tl.grow()
+        // only needs to happen once
+        tl.path.transition().duration(default_sub_iter_duration)
+          .delay(default_sub_iter_duration)
+          .attr('class', 'flowline')
+    })
+
+    hy_lines = _.where(tlines, {type: 'hy', layer: 1})
+    hy_lines.forEach(function(tl) {
+        tl.grow()
+    })    
+}
+
 $('#training-action-button').on('click', function() {
     current_iter_notes = iter_note_sets[current_iter]
     var info_modal = $('#myModal')
@@ -56,7 +92,7 @@ $('#training-action-button').on('click', function() {
         units_1_id = '#' + _.find(unit_sets, {layer: 0, type: 'input'}).d3_group.attr('id')
         units_2_id = '#' + _.find(unit_sets, {layer: (layer1_visible ? 1 : 0), type: 'target'}).d3_group.attr('id')
         add_label_pointer(units_1_id, 'inputs', 'top right')
-        add_label_pointer(units_2_id, 'targets', 'bottom right')
+        add_label_pointer(units_2_id, 'targets', 'top left')
 
         setTimeout(function() {
             $('#info-header').html('Training')
@@ -173,33 +209,11 @@ $('#training-action-button').on('click', function() {
             info_modal.modal('show')
         }, default_sub_iter_duration)
 
-        xw_lines = _.where(tlines, {type: 'xw', layer: 1})
-        xw_lines.forEach(function(tl) { return tl.grow() })
+        grow_all_layer1_lines()
         sub_iter1(1)
-
-        wxh_lines = _.where(tlines, {type: 'wxh', layer: 1})
-        wxh_lines.forEach(function(tl) {
-            memory_cells_open_close('left', 1)
-            tl.grow()
-        })
         sub_iter2(1)
-
-        hh_lines = _.where(tlines, {type: 'hh', layer: 1})
-        hh_lines.forEach(function(tl) {
-            memory_cells_open_close('right', 1)
-            tl.grow()
-            // only needs to happen once
-            tl.path.transition().duration(default_sub_iter_duration)
-              .delay(default_sub_iter_duration)
-              .attr('class', 'flowline')
-        })
-        // nothing to be done here
+        //nothing to be done here
         sub_iter3()
-
-        hy_lines = _.where(tlines, {type: 'hy', layer: 1})
-        hy_lines.forEach(function(tl) {
-            tl.grow()
-        })
         sub_iter4(1)
 
         two_layers_setup = true
@@ -225,15 +239,11 @@ $('#training-action-button').on('click', function() {
         current_state = 'train all'
     } else if (current_state == 'train all') {
         // re-reverse lines
-        playing = true
         weight_lines().forEach(function(line, i) {
             line.path.transition().duration(default_sub_iter_duration)
                 .attr('d', line_function(line.line_data.reverse()))
         })
-        for (i = 1; i < song.sequence_length-1; i++) {
-            // nothing is done in sub_iter 3 so though we have 5 sub iterations we only care about 4 of them
-            setTimeout(function(){ iter(); }, i*default_sub_iter_duration);
-        }
+        play()
         current_state = 'playing'
     }
 })

@@ -18,7 +18,7 @@ var toggle_layer = function() {
     if (layer1_visible) {
         layer1_visible = false
         d3.select('#training_unit_set_target_L0').attr('visibility','visible')
-        d3.select('#layer1').style('visibility', 'hidden')
+        d3.select('#layer1').style('display', 'none')
         d3.select('#layer0').attr('transform', 'translate(' + layer_width/2 + ',0)')
         if (song.song_unit_path != undefined) {
             song.draw_song_unit_line('input', 'grow')
@@ -27,12 +27,17 @@ var toggle_layer = function() {
     } else {
         layer1_visible = true
         d3.select('#training_unit_set_target_L0').attr('visibility','hidden')
-        d3.select('#layer1').style('visibility', 'visible')
+        d3.select('#layer1').style('display', 'block')
         d3.select('#layer0').attr('transform', 'translate(0,0)')
         if (song.song_unit_path != undefined) {
             song.draw_song_unit_line('input', 'grow')
             song.draw_song_unit_line('target', 'grow')
-        }   
+        }
+        if (playing) {
+            pause()
+            grow_all_layer1_lines()
+            setTimeout(function() { play() }, default_sub_iter_duration+100)
+        }
     }
 }
 toggle_layer()
@@ -44,4 +49,12 @@ $('#myModal').modal()
 
 $('#add-layer').on('click', function() {
     toggle_layer()
+})
+
+$('#refresh-button').on('click', function() {
+    if (playing) {
+        pause()
+        current_iter = 0
+        play()
+    }
 })

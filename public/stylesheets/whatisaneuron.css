@@ -35,9 +35,6 @@
     opacity: 0.15;
 }
 
-i {
-  padding: 4px;
-}
 #controls {
     margin: 0px auto;
     width: inherit;
@@ -46,18 +43,6 @@ i {
     margin-top: 30px;
 }
 
-#controls i:hover {
-    color: #333;
-    -moz-box-shadow:    inset 0 0 2px #ccc;
-    -webkit-box-shadow: inset 0 0 2px #ccc;
-    box-shadow:         inset 0 0 2px #ccc;
-    cursor: pointer;
-}
-
-#help-controls i:hover, #walkthru-control i:hover {
-    color: #ededed;
-    cursor: pointer;
-}
 
 #help-controls i {
   padding-left: 5px;

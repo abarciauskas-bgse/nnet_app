@@ -97,3 +97,39 @@ marker {
 g.label_pointer_group text {
   text-align: center;
 }
+
+i.material-icons {
+  color: #337ab7;
+  padding: 5px;
+  border-radius: 5px;
+}
+i.material-icons:hover {
+  cursor: pointer;
+  color: #ededed;
+  -moz-box-shadow:    inset 0 0 2px #ccc;
+  -webkit-box-shadow: inset 0 0 2px #ccc;
+  box-shadow:         inset 0 0 2px #ccc;  
+}
+
+#add-layer i.material-icons {
+  padding: 0px;
+  color: white;
+}
+
+i#home-icon {
+  padding: 0px;
+}
+
+#add-layer i.materials-icons:hover, i#home-icon:hover {
+  color: white;
+  -moz-box-shadow:    none;
+  -webkit-box-shadow: none;
+  box-shadow:         none;  
+}
+
+.btn-info {
+  background: #337ab7;
+  border-color: #337ab7;
+}
+
+

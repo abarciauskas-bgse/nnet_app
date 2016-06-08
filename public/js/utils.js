@@ -179,3 +179,13 @@ var add_unit_sets = function(outer_group, set_type, obj) {
             .attr('height', unit_height)
             .attr('y', function(d, i) { return d.index*unit_height })
 }
+
+var pause = function() {
+    for (var i = 0; i < timeouts.length; i++) {
+        clearTimeout(timeouts[i]);
+    }
+    //quick reset of the timer array you just cleared
+    timeouts = []; 
+    total_time = 0;     
+}
+
