@@ -101,6 +101,8 @@ var draw_plot = function(yrange, xrange, plot_type, data, group, dot_class, upda
           .on('mouseleave', (dot_class.indexOf('active') >= 0) ? data_point_tip.hide : null)
           .on('click', function(d, i) {
               if (dot_class.indexOf('active') >= 0) {
+                  walkthru = true
+                  $('#walkthru-button').html('directions_walk')                
                   d3.selectAll('#first_plot_group .dot').classed('current-point', false).attr('r', 3.5)
                   d3.select(this).classed('current-point', true).attr('r',6)
                   $('#myModal').data('state', 'point-selected')

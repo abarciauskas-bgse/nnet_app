@@ -386,47 +386,57 @@ var transfer = function(x, w, iter = current_iter) {
 
         // FIXME
         $('#' + transfer_multiply_group_1.attr('id')).on('click', function() {
-            sub_step2_modal.show()
-            setTimeout(function() {
-                sub_step2(wx1_start_data, wx2_start_data, w2, x2, shift, shift_sign)
-
-            }, 500)
-            setTimeout(function() {
-               add_label_pointer('.wx_bar', 'sum', 'bottom', 0, 20, false)
-            }, 600 + 2*sub_step_time)            
-            $('#' + transfer_multiply_group_1.attr('id')).unbind('click');
-
-            $('.wx_bar').on('click', function() {
-                sub_step3_modal.show()
+            if (walkthru) {
+                sub_step2_modal.show()
                 setTimeout(function() {
-                    sub_step3(final_transfer_value, final_output_value)
-                }, 500)  
-                add_label_pointer('#threshold_bar_top', 'threshold', 'top right')  
-            })
+                    sub_step2(wx1_start_data, wx2_start_data, w2, x2, shift, shift_sign)
+
+                }, 500)
+                setTimeout(function() {
+                   add_label_pointer('.wx_bar', 'sum', 'bottom', 0, 20, false)
+                }, 600 + 2*sub_step_time)            
+                $('#' + transfer_multiply_group_1.attr('id')).unbind('click');
+
+                $('.wx_bar').on('click', function() {
+                    sub_step3_modal.show()
+                    setTimeout(function() {
+                        sub_step3(final_transfer_value, final_output_value)
+                    }, 500)  
+                    add_label_pointer('#threshold_bar_top', 'threshold', 'top right')  
+                })              
+            }
         })
 
         $('#threshold_bar_top').on('click', function() {
-            output_modal.show()
-            setTimeout(function() {
-                highlight_outputs(final_output_value, 0, true_class)
-            }, 500)
-            add_label_pointer('#whatisaneuron_unit_set_output_L0', 'outputs', 'top right')
+            if (walkthru) {
+                output_modal.show()
+                setTimeout(function() {
+                    highlight_outputs(final_output_value, 0, true_class)
+                }, 500)
+                add_label_pointer('#whatisaneuron_unit_set_output_L0', 'outputs', 'top right')
+            }
         })
 
         $('#whatisaneuron_unit_set_output_L0').on('click', function() {
-            target_modal.show()
-            setTimeout(function() {
-                update_current_point(iter)
-                iter_weights = all_weights[iter]
-                iter_loss = long_term_regrets[iter]
-                update_shaded(iter_weights, iter)
-                update_loss(short_term_regrets, iter_loss, iter)
-                add_label_pointer('#whatisaneuron_unit_set_target_L0', 'outputs', 'top right')            
-            }, 500)
+            if (walkthru) {
+                target_modal.show()
+                setTimeout(function() {
+                    update_current_point(iter)
+                    iter_weights = all_weights[iter]
+                    iter_loss = long_term_regrets[iter]
+                    update_shaded(iter_weights, iter)
+                    update_loss(short_term_regrets, iter_loss, iter)
+                    add_label_pointer('#whatisaneuron_unit_set_target_L0', 'outputs', 'top right')            
+                }, 500)
+            }
         })
 
         $('#losses_plot_group').on('click', function() {
-            finished_walkthru_modal.show()
+            if (walkthru) {
+                walkthru = false
+                $('#walkthru-button').html('loop')
+                finished_walkthru_modal.show()
+            }
         })
     }
 }

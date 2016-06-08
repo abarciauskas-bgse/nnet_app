@@ -31,15 +31,15 @@
     opacity: 0.15;
 }
 
+i {
+  padding: 4px;
+}
 #controls {
-    position: relative;
-    display: block;
-    width: 100%;
-    height: 30px;
     margin: 0px auto;
-    margin-top: 30px;
-    margin-left: -20px;
+    width: inherit;
     text-align: center;
+    margin-left:100px;
+    margin-top: 30px;
 }
 
 #controls i:hover {
@@ -48,6 +48,20 @@
     -webkit-box-shadow: inset 0 0 2px #ccc;
     box-shadow:         inset 0 0 2px #ccc;
     cursor: pointer;
+}
+
+#help-controls i:hover, #walkthru-control i:hover {
+    color: #ededed;
+    cursor: pointer;
+}
+
+#help-controls i {
+  padding-left: 5px;
+}
+
+#help-controls, #walkthru-control {
+    color: #ddd;
+    margin-top: 44px;
 }
 
 .player-icons {

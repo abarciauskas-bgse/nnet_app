@@ -292,14 +292,64 @@ var finished_walkthru_modal = new ModalData(
     'Ok',
     tag_position.top, width - whatisaneuron_pos.left)
 
+var help_modal = new ModalData(
+    'Help',
+    'Click the <b>controls</b> to train all the points or <b>click a point</b> in the first plot to train that point. If you\'re done with this page go to <a href="/whatisaneuralnetwork">What is a neural network?</a>',
+    'Ok',
+    tag_position.top, width/2)
+
+var info_modal = new ModalData(
+    'Learn more',
+    'This is a single neuron which has been setup to take 2 inputs, x1 and x2 and learn what class (<b style="color:#E88923">orange</b> or <b style="color:#9F55E8">purple</b>) the data point belongs to. It does this by randomly initializing a set of weights, multiplying each data point by a set of values, transforming the sum into a probability and than evaluating the difference between the output and the target class.',
+    'Ok',
+    tag_position.top, width/2)
+
+var walkthru_modal = new ModalData(
+    'Walkthrough Mode',
+    'You are currently in walk-through mode, clicking this icon toggles between walkthrough and looping modes.',
+    'Ok',
+    187, width - 200)
+
+var looping_modal = new ModalData(
+    'Looping Mode',
+    'You are currently in looping mode, clicking this icon toggles between walkthrough and looping modes.',
+    'Ok',
+    187, width - 200)
+
 var points_clicked = 0
 var walkthru = false
 var info_modal = $('#myModal')
+
 $('#whatisaneuron-action-button').on('click', function() {
-    walkthru = true
     setTimeout(function() { $('.modal-dialog').addClass('modal-sm') }, 200)
     if ($('#myModal').data().state == undefined) {
         pick_point_modal.show()
         $('#myModal').data('state', 'entered')
     }
 });
+
+$('#help-button').on('click', function() {
+    help_modal.show()
+})
+
+$('#info-button').on('click', function() {
+    info_modal.show()
+})
+
+
+$('#walkthru-button').on('click', function() {
+    if (walkthru == true) {
+        d3.selectAll('.multiply_bar').remove()
+        d3.selectAll('.link').remove()
+        d3.selectAll('.addition_link').remove()
+        d3.selectAll('#threshold-poly').remove()        
+        walkthru = false
+        looping_modal.show()
+        $('#walkthru-button').html('loop')
+    } else {
+        pause()
+        walkthru = true
+        walkthru_modal.show()
+        $('#walkthru-button').html('directions_walk')
+    }
+})
