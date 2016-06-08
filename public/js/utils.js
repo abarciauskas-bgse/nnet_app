@@ -22,11 +22,11 @@ var layer_group = function(object, network) {
 var line_function = d3.svg.line().interpolate("basis");
 
 // FIXME: this is scary stuff
-var add_label_pointer = function(d3_selector, text, position, add_x_offset = 0, add_y_offset = 0, add_pointer = true, fontsize = 16) {
+var add_label_pointer = function(d3_selector, text, position, add_x_offset = 0, add_y_offset = 0, add_pointer = true, fontsize = 16, parent_group = '#layer0') {
     marker_id = 'label_pointer_' + text.split(" ").join("_")
     if ($('#' + marker_id).length > 0) { return true }
     offset = 30
-    svg_location = $('#layer0').position()
+    svg_location = $(parent_group).position()
     var page_location = $(d3_selector).position()
     switch (position) {
         case 'bottom left':
@@ -39,26 +39,26 @@ var add_label_pointer = function(d3_selector, text, position, add_x_offset = 0, 
             break;
         case 'top right':
             x_offset = page_location.left + offset;
-            y_offset = page_location.top - offset;
+            y_offset = page_location.top;
             break;    
         case 'top':
             x_offset = page_location.left;
-            y_offset = page_location.top - offset;
+            y_offset = page_location.top;
             break;
         case 'top left':
             x_offset = page_location.left - 1.5*offset;
-            y_offset = page_location.top - offset;
+            y_offset = page_location.top;
             break;    
         default: 
             x_offset = page_location.left;
             y_offset = page_location.top;
     }
 
-    label_pointer_group = d3.select(layer0).append('g')
+    label_pointer_group = d3.select(parent_group).append('g')
           .attr('class','label_pointer_group')
           .attr('transform', 'translate('
             + (x_offset + add_x_offset - svg_location.left)
-            + ',' + (y_offset + add_y_offset - svg_location.top + 30) + ')')
+            + ',' + (y_offset + add_y_offset - svg_location.top) + ')')
 
     label_pointer_group.append('text').text(text).style('font-size', fontsize)
     add_marker(marker_id)

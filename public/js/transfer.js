@@ -380,8 +380,8 @@ var transfer = function(x, w, iter = current_iter) {
         setTimeout(function() {
             sub_step0(data1, data2, final_data_start, final_data)
             sub_step1(x1_start_data, x2_start_data)
-            add_label_pointer('#whatisaneuron_unit_set_input_L0', 'inputs', 'top left')
-            add_label_pointer('#whatisaneuron_weight_set_xw_L0_N0', 'weights', 'top left')
+            add_label_pointer('#whatisaneuron_unit_set_input_L0', 'inputs', 'top right', -17)
+            add_label_pointer('#whatisaneuron_weight_set_xw_L0_N0', 'weights', 'top right', -17)
         }, 500)
 
         // FIXME
@@ -393,7 +393,7 @@ var transfer = function(x, w, iter = current_iter) {
 
                 }, 500)
                 setTimeout(function() {
-                   add_label_pointer('.wx_bar', 'sum', 'bottom', 0, 20, false)
+                   add_label_pointer('.wx_bar', 'sum', 'bottom', -22, 20, false)
                 }, 600 + 2*sub_step_time)            
                 $('#' + transfer_multiply_group_1.attr('id')).unbind('click');
 
@@ -402,7 +402,7 @@ var transfer = function(x, w, iter = current_iter) {
                     setTimeout(function() {
                         sub_step3(final_transfer_value, final_output_value)
                     }, 500)  
-                    add_label_pointer('#threshold_bar_top', 'threshold', 'top right')  
+                    add_label_pointer('#threshold_bar_top', 'threshold', 'top right', -17)  
                 })              
             }
         })
@@ -413,7 +413,7 @@ var transfer = function(x, w, iter = current_iter) {
                 setTimeout(function() {
                     highlight_outputs(final_output_value, 0, true_class)
                 }, 500)
-                add_label_pointer('#whatisaneuron_unit_set_output_L0', 'outputs', 'top right')
+                add_label_pointer('#whatisaneuron_unit_set_output_L0', 'outputs', 'top right', -17)
             }
         })
 
@@ -426,7 +426,7 @@ var transfer = function(x, w, iter = current_iter) {
                     iter_loss = long_term_regrets[iter]
                     update_shaded(iter_weights, iter)
                     update_loss(short_term_regrets, iter_loss, iter)
-                    add_label_pointer('#whatisaneuron_unit_set_target_L0', 'outputs', 'top right')            
+                    add_label_pointer('#whatisaneuron_unit_set_target_L0', 'outputs', 'top right', -17)            
                 }, 500)
             }
         })

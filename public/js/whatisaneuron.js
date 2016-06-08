@@ -251,7 +251,7 @@ var pick_point_modal = new ModalData(
     'Training', 
     '<b>Click a point</b> to train the network.',
     'Ok',
-    first_plot_position.top - plot_width, width - threshold_position)
+    first_plot_position.top - 2*plot_width, width - threshold_position)
 
 var tmg_position = $('#' + transfer_multiply_group_1.attr('id')).position()
 var sub_step0_modal = new ModalData(
@@ -354,5 +354,5 @@ $('#walkthru-button').on('click', function() {
     }
 })
 
-add_label_pointer('#whatisaneuron_unit_set_input_L0', '-3', 'bottom left', 12, unit_height*2-30, false, 12)
-add_label_pointer('#whatisaneuron_unit_set_input_L0', '3', 'bottom left', -neuron_width-unit_width/2, unit_height-30, false, 12)
+add_label_pointer('.whatisaneuron_unit_input_L0', '-3', 'bottom left', 12, unit_height*2-30, false, 12, 'svg')
+add_label_pointer('.whatisaneuron_unit_input_L0', '3', 'bottom left', 12, unit_height-30, false, 12, 'svg')

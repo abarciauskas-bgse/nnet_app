@@ -92,7 +92,7 @@ $('#training-action-button').on('click', function() {
         units_1_id = '#' + _.find(unit_sets, {layer: 0, type: 'input'}).d3_group.attr('id')
         units_2_id = '#' + _.find(unit_sets, {layer: (layer1_visible ? 1 : 0), type: 'target'}).d3_group.attr('id')
         add_label_pointer(units_1_id, 'inputs', 'top right')
-        add_label_pointer(units_2_id, 'targets', 'top left')
+        add_label_pointer(units_2_id, 'targets', 'top right')
 
         setTimeout(function() {
             $('#info-header').html('Training')
@@ -124,7 +124,7 @@ $('#training-action-button').on('click', function() {
             tl.grow()
         })
         memory_id = '.' + _.find(memory_cells, {layer: 0}).d3_group.attr('class')
-        add_label_pointer(memory_id, 'memory', 'top left')
+        add_label_pointer(memory_id, 'memory', 'top right')
         sub_iter2()
 
         setTimeout(function() {
@@ -186,7 +186,7 @@ $('#training-action-button').on('click', function() {
             info_modal.css('top', svg_position.top + neuron_height/2 + 2*unit_width)
             info_modal.css('right', width/2-200)
             info_modal.modal('show')
-        }, default_sub_iter_duration)
+        }, 200)
 
         current_state = 'backpropagate'
     } else if (current_state == 'sub_iter4' && layer1_visible && !two_layers_setup) {
@@ -198,7 +198,7 @@ $('#training-action-button').on('click', function() {
             info_modal.css('top', svg_position.top + neuron_height/2 + 2*unit_width)
             info_modal.css('right', width/2-200)
             info_modal.modal('show')
-        }, default_sub_iter_duration)
+        }, 200)
 
         current_state = 'next layer'
     } else if (current_state == 'next layer') {
@@ -207,7 +207,7 @@ $('#training-action-button').on('click', function() {
             info_modal.css('top', svg_position.top + neuron_height/2 + 2*unit_width)
             info_modal.css('right', width/2-200)
             info_modal.modal('show')
-        }, default_sub_iter_duration)
+        }, 200)
 
         grow_all_layer1_lines()
         sub_iter1(1)
