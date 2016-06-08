@@ -354,5 +354,5 @@ $('#walkthru-button').on('click', function() {
     }
 })
 
-add_label_pointer('.whatisaneuron_unit_input_L0', '-3', 'bottom left', 12, unit_height*2-30, false, 12)
-add_label_pointer('.whatisaneuron_unit_input_L0', '3', 'bottom left', 12, unit_height-30, false, 12)
+add_label_pointer('#whatisaneuron_unit_set_input_L0', '-3', 'bottom left', 12, unit_height*2-30, false, 12)
+add_label_pointer('#whatisaneuron_unit_set_input_L0', '3', 'bottom left', -neuron_width-unit_width/2, unit_height-30, false, 12)

@@ -40,7 +40,7 @@
     width: inherit;
     text-align: center;
     margin-left:100px;
-    margin-top: 30px;
+    margin-top: 10px;
 }
 
 
@@ -50,7 +50,7 @@
 
 #help-controls, #walkthru-control {
     color: #ddd;
-    margin-top: 44px;
+    margin-top: 14px;
 }
 
 .player-icons {
