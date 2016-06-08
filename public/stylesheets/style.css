@@ -15,7 +15,7 @@ body {
 }
 
 body.modal-open {
-  overflow: hidden;
+  overflow: scroll;
 }
 
 svg {

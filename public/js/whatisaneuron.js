@@ -288,7 +288,7 @@ var target_modal = new ModalData(
 
 var finished_walkthru_modal = new ModalData(
     'Done training!',
-    'Congratulations! You just trained a neuron. <b>Use the controls</b> to train on the rest of the data.',
+    'Congratulations! You just trained a neuron. <b>Pick another point</b>, <b>use the controls</b> to train on the rest of the data.',
     'Ok',
     tag_position.top, width - whatisaneuron_pos.left)
 
