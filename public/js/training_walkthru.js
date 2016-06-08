@@ -14,8 +14,8 @@ $('#training-action-button').on('click', function() {
             $('#info-header').html('Network setup')
             $('#info-text').html("First, we will randomly set network weights.\nDuring training, the network learns weights from the data.")
             $('#training-action-button').html("Initialize weights")
-            info_modal.css('top', $(wts_1_id).position().top - svg_position.top)
-            info_modal.css('right', width)
+            info_modal.css('top', svg_position.top)
+            info_modal.css('right', width/2 - inner_margin - unit_width*2)
             info_modal.modal('show')
         }, 200)
 
@@ -31,7 +31,7 @@ $('#training-action-button').on('click', function() {
             $('#info-text').html("Next, we input a song into the network.")
             $('#training-action-button').html("Input song")
             info_modal.css('top', $('#song_plot_group').position().top - svg_position.top - song_plot_height)
-            info_modal.css('right', width)
+            info_modal.css('right', width-200)
             info_modal.modal('show')
         }, 200)
 
@@ -75,8 +75,8 @@ $('#training-action-button').on('click', function() {
 
         setTimeout(function() {
             $('#info-text').html("The input is multiplied by the first set of weights.")
-            info_modal.css('top', $(wts_1_id).position().top - svg_position.top)
-            info_modal.css('right', width)
+            info_modal.css('top', svg_position.top + 10)
+            info_modal.css('right', width/2 - inner_margin - unit_width*2)
             info_modal.modal('show')
         }, 200)
 
@@ -93,8 +93,8 @@ $('#training-action-button').on('click', function() {
 
         setTimeout(function() {
             $('#info-text').html("The weighted sum is then passed to the memory cell.")
-            info_modal.css('top', $(wts_1_id).position().top - svg_position.top)
-            info_modal.css('right', width)
+            info_modal.css('top', svg_position.top + neuron_height/2 + 2*unit_width)
+            info_modal.css('right', width-200)
             info_modal.modal('show')
         }, 200)  
 
@@ -115,8 +115,8 @@ $('#training-action-button').on('click', function() {
 
         setTimeout(function() {
             $('#info-text').html("The memory cell stores the information in a <b>hidden state</b> which is recalled on the next iteration.")
-            info_modal.css('top', $(wts_1_id).position().top - svg_position.top)
-            info_modal.css('right', width)
+            info_modal.css('top', svg_position.top + neuron_height/2 + 2*unit_width)
+            info_modal.css('right', width-200)
             info_modal.modal('show')
         }, 200) 
 
@@ -135,8 +135,8 @@ $('#training-action-button').on('click', function() {
 
         setTimeout(function() {
             $('#info-text').html("The hidden state is multiplied by output weights. This is the output of the first layer.")
-            info_modal.css('top', $(wts_1_id).position().top - svg_position.top)
-            info_modal.css('right', width)
+            info_modal.css('top', svg_position.top + neuron_height/2 + 2*unit_width)
+            info_modal.css('right', width-200)
             info_modal.modal('show')
         }, 200)
 
@@ -147,8 +147,8 @@ $('#training-action-button').on('click', function() {
         setTimeout(function() {
             $('#info-text').html("The difference between our guess and the truth is used to nudge the weights to better fit the data.")
             $('#training-action-button').html("Update weights")
-            info_modal.css('top', $(wts_1_id).position().top - svg_position.top)
-            info_modal.css('right', width)
+            info_modal.css('top', svg_position.top + neuron_height/2 + 2*unit_width)
+            info_modal.css('right', width/2-200)
             info_modal.modal('show')
         }, default_sub_iter_duration)
 
@@ -159,8 +159,8 @@ $('#training-action-button').on('click', function() {
 
         setTimeout(function() {
             $('#info-text').html("The output of the first layer becomes the input to the second layer.")
-            info_modal.css('top', $(wts_1_id).position().top - svg_position.top)
-            info_modal.css('right', width)
+            info_modal.css('top', svg_position.top + neuron_height/2 + 2*unit_width)
+            info_modal.css('right', width/2-200)
             info_modal.modal('show')
         }, default_sub_iter_duration)
 
@@ -168,8 +168,8 @@ $('#training-action-button').on('click', function() {
     } else if (current_state == 'next layer') {
         setTimeout(function() {
             $('#info-text').html("And the second layer works just like the first.")
-            info_modal.css('top', $(wts_1_id).position().top - svg_position.top)
-            info_modal.css('right', width)
+            info_modal.css('top', svg_position.top + neuron_height/2 + 2*unit_width)
+            info_modal.css('right', width/2-200)
             info_modal.modal('show')
         }, default_sub_iter_duration)
 
@@ -218,8 +218,8 @@ $('#training-action-button').on('click', function() {
         setTimeout(function() {
             $('#info-text').html("Now that we see how the network is working, let's train on the full song!")
             $('#training-action-button').html("Train network!")
-            info_modal.css('top', $(wts_1_id).position().top - svg_position.top)
-            info_modal.css('right', width)
+            info_modal.css('top', svg_position.top + neuron_height/2 + 2*unit_width)
+            info_modal.css('right', width/2-200)
             info_modal.modal('show')
         }, default_sub_iter_duration)                    
         current_state = 'train all'
