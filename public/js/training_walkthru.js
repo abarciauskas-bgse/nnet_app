@@ -56,7 +56,7 @@ $('#training-action-button').on('click', function() {
         units_1_id = '#' + _.find(unit_sets, {layer: 0, type: 'input'}).d3_group.attr('id')
         units_2_id = '#' + _.find(unit_sets, {layer: (layer1_visible ? 1 : 0), type: 'target'}).d3_group.attr('id')
         add_label_pointer(units_1_id, 'inputs', 'top right')
-        add_label_pointer(units_2_id, 'targets', (layer1_visible ? 'top left' : 'bottom right'))
+        add_label_pointer(units_2_id, 'targets', 'bottom right')
 
         setTimeout(function() {
             $('#info-header').html('Training')

@@ -1,6 +1,8 @@
 extends layout
 
 block content
+  button(type="button", class="btn btn-info btn-md", id='add-layer')
+    #[i.material-icons(style='font-size:16px; font-weight:bold; vertical-align: sub;') add] #[b Layer]
   #myModal.modal.fade(role='dialog', data-backdrop = 'false')
     .modal-dialog
       .modal-content

@@ -26,6 +26,6 @@ var num_classes = 11,
     light_grey = '#ededed',
     medium_grey = '#ccc',
     song_plot_note_height = song_plot_height/num_classes,
-    layer1_visible = true,
+    layer1_visible = false,
     default_sub_iter_duration = 1000,
     training_layer0 = null

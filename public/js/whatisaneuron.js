@@ -353,3 +353,6 @@ $('#walkthru-button').on('click', function() {
         $('#walkthru-button').html('directions_walk')
     }
 })
+
+add_label_pointer('.whatisaneuron_unit_input_L0', '-3', 'bottom left', 12, unit_height*2-30, false, 12)
+add_label_pointer('.whatisaneuron_unit_input_L0', '3', 'bottom left', 12, unit_height-30, false, 12)

@@ -5,6 +5,10 @@
   shape-rendering: crispEdges;
 }
 
+.axis text {
+  font-size: 12px;
+}
+
 .dot {
   opacity: 0;
 }
@@ -133,4 +137,8 @@ svg {
 }
 #title {
     margin-bottom: 60px;
+}
+
+.label {
+  font-size: 100%;
 }
