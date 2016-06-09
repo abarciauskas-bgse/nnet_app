@@ -24,7 +24,7 @@ var line_function = d3.svg.line().interpolate("basis");
 // FIXME: this is scary stuff
 var add_label_pointer = function(d3_selector, text, position, add_x_offset = 0, add_y_offset = 0, add_pointer = true, fontsize = 16, parent_group = '#layer0') {
     marker_id = 'label_pointer_' + text.split(" ").join("_")
-    //if ($('#' + marker_id).length > 0) { return true }
+    if ($('#' + marker_id).length > 0) { return true }
     offset = 30
     svg_location = $(parent_group).position()
     var page_location = $(d3_selector).position()
