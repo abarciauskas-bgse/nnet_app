@@ -294,7 +294,11 @@ var sub_step0 = function(data1, data2, final_data_start, final_data) {
     addwx_multiply(data1, transfer_multiply_group_1, 1)
     addwx_multiply(data2, transfer_multiply_group_2, 2)
     addwx_multiply(final_data_start, transfer_addition_group)
-    addwx_multiply(final_data, transfer_addition_group)  
+    addwx_multiply(final_data, transfer_addition_group)
+    d3.selectAll('.x_start_bar').each(function() {
+        d3.select(this).on('mouseover', data_rect_tip.show)
+        d3.select(this).on('mouseleave', data_rect_tip.hide)
+    })    
 }
 
 var sub_step1 = function(x1_start_data, x2_start_data) {
@@ -303,10 +307,14 @@ var sub_step1 = function(x1_start_data, x2_start_data) {
     draw_multiply_links(x1_start_data, transfer_group_1, true)
     draw_multiply_links(x2_start_data, transfer_group_2, true)
     multiply(1)
-    multiply(2)    
+    multiply(2)
+    d3.selectAll('.x_bar, .w_bar, .wx_start_bar').each(function() {
+        d3.select(this).on('mouseover', data_rect_tip.show)
+        d3.select(this).on('mouseleave', data_rect_tip.hide)
+    })         
 }
 
-var sub_step2 = function(wx1_start_data, wx2_start_data, w2, x2, shift, shift_sign) {
+var sub_step2 = function(wx1_start_data, wx2_start_data, w2, x2, shift, shift_sign, final_transfer_value) {
     draw_addition_links(wx1_start_data, transfer_group_1, 1)
     draw_addition_links(wx2_start_data, transfer_group_2, 2)
     draw_addition_links(wx1_start_data, transfer_group_1, 1, 'first')
@@ -314,12 +322,22 @@ var sub_step2 = function(wx1_start_data, wx2_start_data, w2, x2, shift, shift_si
     draw_addition_links(wx1_start_data, transfer_group_1, 1, 'second', w2*x2)
     move_to_addition(1)
     move_to_addition(2)
+    d3.selectAll('.wx_bar').each(function() {
+        d3.select(this).data()[0].original = final_transfer_value
+        d3.select(this).on('mouseover', data_rect_tip.show)
+        d3.select(this).on('mouseleave', data_rect_tip.hide)
+    })     
     add(shift, shift_sign)     
 }
 
 var sub_step3 = function(final_transfer_value, final_output_value) {
     activate()
-    threshold(final_transfer_value, final_output_value)  
+    threshold(final_transfer_value, final_output_value)
+    d3.selectAll('.wxsum_bar').each(function() {
+        d3.select(this).data()[0].original = final_output_value
+        d3.select(this).on('mouseover', data_rect_tip.show)
+        d3.select(this).on('mouseleave', data_rect_tip.hide)
+    })
 }
 
 var highlight_outputs = function(final_output_value, delay) {
@@ -372,7 +390,7 @@ var transfer = function(x, w, iter = current_iter) {
     if (!walkthru) {
         sub_step0(data1, data2, final_data_start, final_data)
         sub_step1(x1_start_data, x2_start_data)
-        sub_step2(wx1_start_data, wx2_start_data, w2, x2, shift, shift_sign)
+        sub_step2(wx1_start_data, wx2_start_data, w2, x2, shift, shift_sign, final_transfer_value)
         sub_step3(final_transfer_value, final_output_value)
         highlight_outputs(final_output_value, sub_step_time*5, true_class)
     } else if (walkthru) {
@@ -380,40 +398,42 @@ var transfer = function(x, w, iter = current_iter) {
         setTimeout(function() {
             sub_step0(data1, data2, final_data_start, final_data)
             sub_step1(x1_start_data, x2_start_data)
-            add_label_pointer('#whatisaneuron_unit_set_input_L0', 'inputs', 'top right', -17)
-            add_label_pointer('#whatisaneuron_weight_set_xw_L0_N0', 'weights', 'top right', -17)
+            add_label_pointer('#whatisaneuron_unit_set_input_L0', 'input x1', 'top', -30, -17)
+            add_label_pointer('#whatisaneuron_unit_set_input_L0', 'input x2', 'bottom', -35, unit_height*2-5)
+            add_label_pointer('#whatisaneuron_weight_set_xw_L0_N0', 'weights', 'top right', -20, -31)
         }, 500)
 
         // FIXME
-        $('#' + transfer_multiply_group_1.attr('id')).on('click', function() {
+        $('#' + transfer_multiply_group_1.attr('id') 
+          + ', #' + transfer_multiply_group_2.attr('id') 
+          + ', #weights_label').on('click', function() {
             if (walkthru) {
                 sub_step2_modal.show()
                 setTimeout(function() {
-                    sub_step2(wx1_start_data, wx2_start_data, w2, x2, shift, shift_sign)
-
+                    sub_step2(wx1_start_data, wx2_start_data, w2, x2, shift, shift_sign, final_transfer_value)
                 }, 500)
                 setTimeout(function() {
-                   add_label_pointer('.wx_bar', 'sum', 'bottom', -22, 20, false)
+                   add_label_pointer('.wx_bar', 'sum', 'bottom', -25, 20, false)
                 }, 600 + 2*sub_step_time)            
                 $('#' + transfer_multiply_group_1.attr('id')).unbind('click');
 
-                $('.wx_bar').on('click', function() {
+                $('.wx_bar, #sum_label text').on('click', function() {
                     sub_step3_modal.show()
                     setTimeout(function() {
                         sub_step3(final_transfer_value, final_output_value)
                     }, 500)  
-                    add_label_pointer('#threshold_bar_top', 'threshold', 'top right', -17)  
+                    add_label_pointer('#threshold_bar_top', 'threshold', 'top right', -20, -31)  
                 })              
             }
         })
 
-        $('#threshold_bar_top').on('click', function() {
+        $('#threshold_bar_top, #transfer_addition_group, #threshold_bar_bottom').on('click', function() {
             if (walkthru) {
                 output_modal.show()
                 setTimeout(function() {
                     highlight_outputs(final_output_value, 0, true_class)
                 }, 500)
-                add_label_pointer('#whatisaneuron_unit_set_output_L0', 'outputs', 'top right', -17)
+                add_label_pointer('#whatisaneuron_unit_set_output_L0', 'guess', 'top right', -20, -31)
             }
         })
 
@@ -426,12 +446,12 @@ var transfer = function(x, w, iter = current_iter) {
                     iter_loss = long_term_regrets[iter]
                     update_shaded(iter_weights, iter)
                     update_loss(short_term_regrets, iter_loss, iter)
-                    add_label_pointer('#whatisaneuron_unit_set_target_L0', 'outputs', 'top right', -17)            
+                    add_label_pointer('#whatisaneuron_unit_set_target_L0', 'target', 'bottom', -30, unit_height*2)
                 }, 500)
             }
         })
 
-        $('#losses_plot_group').on('click', function() {
+        $('#whatisaneuron_unit_set_target_L0').on('click', function() {
             if (walkthru) {
                 walkthru = false
                 $('#walkthru-button').html('loop')

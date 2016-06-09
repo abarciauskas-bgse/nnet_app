@@ -11,7 +11,7 @@ var training_layer1 = training_group.append('g').attr('id', 'layer1')
 add_network('training') // network - training or create
 add_song_plot(training_group)
 
-var song = new Song('/js/daft_punk-one_more_time.json', 'training')
+var song = new Song('/js/daft_punk-one_more_time.json', 'Daft Punk', 'One More Time', 'training')
 
 // initial state stuff
 var toggle_layer = function() {
@@ -23,6 +23,11 @@ var toggle_layer = function() {
         if (song.song_unit_path != undefined) {
             song.draw_song_unit_line('input', 'grow')
             song.draw_song_unit_line('target', 'grow')
+        }
+        if (playing) {
+            d3.select('#targets_label').remove()
+            units_2_id = '#' + _.find(unit_sets, {layer: 0, type: 'target'}).d3_group.attr('id')
+            add_label_pointer(units_2_id, 'targets', 'top left', -unit_width/2, 0)        
         }
     } else {
         layer1_visible = true
@@ -37,6 +42,9 @@ var toggle_layer = function() {
             pause()
             grow_all_layer1_lines()
             setTimeout(function() { play() }, default_sub_iter_duration+100)
+            d3.select('#targets_label').remove()
+            units_2_id = '#' + _.find(unit_sets, {layer: 1, type: 'target'}).d3_group.attr('id')
+            add_label_pointer(units_2_id, 'targets', 'top left', -unit_width/2, 0)
         }
     }
 }
@@ -57,4 +65,16 @@ $('#refresh-button').on('click', function() {
         current_iter = 0
         play()
     }
+})
+
+var notes_tip = d3.tip().attr('class', 'd3-tip').html(function(d) {
+    var note_i = (d.index == undefined) ? d.note : d.index
+    return notes_values[note_i];
+});
+
+svg.call(notes_tip)
+
+d3.selectAll('.training_unit_input_L0').each(function(d) {
+    d3.select(this).on('mouseover', notes_tip.show)
+    d3.select(this).on('mouseleave', notes_tip.hide)
 })

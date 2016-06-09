@@ -28,4 +28,5 @@ var num_classes = 11,
     song_plot_note_height = song_plot_height/num_classes,
     layer1_visible = false,
     default_sub_iter_duration = 1000,
-    training_layer0 = null
+    training_layer0 = null,
+    notes_values = ['C','C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#'] // missing 'B'

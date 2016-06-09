@@ -20,15 +20,43 @@ d3.select('#whatisaneuron').attr('transform', 'translate(' + layer_width/2 + ',0
 
 /* Initialize tooltip */
 var data_point_tip = d3.tip().attr('class', 'd3-tip').html(function(d) {
-    return Math.round(d.x1*100)/100 + ', ' + Math.round(d.x2*100)/100;
+    return 'x1 = ' + Math.round(d.x1*100)/100 + ', x2 = ' + Math.round(d.x2*100)/100;
 });
 var outputs_tip = d3.tip().attr('class', 'd3-tip').html(function(d, i) {
     return Math.round(((i == 0) ? (1 - d) : d)*100)/100
 });
 
+var data_rect_tip = d3.tip().attr('class', 'd3-tip').html(function(d) {
+    switch (d.type) { 
+        case 'x_start':
+            label = 'data = '
+            break;
+        case 'x':
+            label = 'data = '
+            break;
+        case 'w':
+            label = 'weight = '
+            break;
+        case 'wx_start':
+            label = 'data x weight = '
+            break;
+        case 'wx':
+            label = 'sum = '
+            break;
+        case 'wxsum':
+            label = 'signal = '
+            break;
+        default:
+            label = ''
+            break;
+    }
+    return label + Math.round(d.original*100)/100
+})
+
 /* Invoke the tip in the context of your visualization */
 svg.call(data_point_tip)
 svg.call(outputs_tip)
+svg.call(data_rect_tip)
 
 // LAYOUT VARS FOR whatisaneuron
 var scale = 3// scale of data, -scale to scale
@@ -238,82 +266,83 @@ var ModalData = function(header, body, button_text, top, right) {
 ModalData.prototype.show = function(delay = 300) {
     var modal_object = this;
     setTimeout(function() {
+        $('#dialog-control').html('Close dialog');
         if (modal_object.header != null) { $('#info-header').html(modal_object.header) }
         if (modal_object.body != null) { $('#info-text').html(modal_object.body.toString()) }
         if (modal_object.button_text != null) { $('#whatisaneuron-action-button').html(modal_object.button_text) }
         info_modal.css('top', modal_object.top)
         info_modal.css('right', modal_object.right)
         info_modal.modal('show')
-    }, delay)    
+    }, delay)
 }
 
 var pick_point_modal = new ModalData(
     'Training', 
-    '<b>Click a point</b> to train the network.',
-    'Ok',
+    '<b>Click a point</b> to start training the network.',
+    'Close',
     first_plot_position.top - 2*plot_width, width - threshold_position)
 
 var tmg_position = $('#' + transfer_multiply_group_1.attr('id')).position()
 var sub_step0_modal = new ModalData(
-    'Training', 
-    'Step 1: The data is multiplied by a set of weights. <b>Click the weights</b> to sum the weighted inputs.',
-    'Ok',
+    'Great!', 
+    'Step 1 of 5: The data is multiplied by a set of weights. <b>Click the weights</b> to sum the weighted inputs.',
+    'Close',
     tmg_position.top, width - threshold_position)
 
 var tag_position = $('#' + transfer_addition_group.attr('id')).position()
 var sub_step2_modal = new ModalData(
-    'Training', 
-    'Step 2: The weighted inputs are summed to a single value. <b>Click the sum</b> to see the output of the neuron.',
-    'Ok',
+    'Good work!', 
+    'Step 2 of 5: The weighted inputs are summed to a single value. <b>Click the sum</b> to see the output of the neuron.',
+    'Close',
     tag_position.top, width - threshold_position)
 
 var sub_step3_modal = new ModalData(
-    'Training', 
-    'Final step: The threshold function outputs a value between <b>0</b> and <b>1</b>. <b>Click the threshold</b> to see the output.',
-    'Ok',
+    'Cool!', 
+    'Step 3 of 5: The threshold function outputs a value between <b>0</b> and <b>1</b>. <b>Click the threshold</b> to see the output.',
+    'Close',
     tag_position.top, width - threshold_position)
 
 var whatisaneuron_pos = $('#whatisaneuron').position
 var output_modal = new ModalData(
-    'Output',
-    'Hover over the bars to see the probability of each class, <b style="color:#E88923">orange</b> and <b style="color:#9F55E8">purple</b>. This is the output of the neuron. <b>Click one of the outputs</b> to see the true class.',
-    'Ok',
+    'Almost there!',
+    'Step 4 of 5: Hover over the bars to see the probability of each class, <b style="color:#E88923">orange</b> and <b style="color:#9F55E8">purple</b>. This is the output of the neuron. <b>Click one of the outputs</b> to see the true class.',
+    'Close',
     tag_position.top, width - whatisaneuron_pos.left)
 
 var target_modal = new ModalData(
-    'Target',
-    'The difference between the probability of the class is used to update the weights to better fit the data. <b>Click the loss label</b> to finish.',
-    'Ok',
+    'Done!',
+    'Step 5 of 5: The difference between the probability of the class is used to update the weights to better fit the data. <b>Click the target</b> to finish.',
+    'Close',
     tag_position.top, width - whatisaneuron_pos.left)
 
 var finished_walkthru_modal = new ModalData(
-    'Done training!',
+    'Congratulations!',
     'Congratulations! You just trained a neuron. <b>Pick another point</b>, <b>use the controls</b> to train on the rest of the data.',
-    'Ok',
+    'Close',
     tag_position.top, width - whatisaneuron_pos.left)
 
 var help_modal = new ModalData(
     'Help',
     'Click the <b>controls</b> to train all the points or <b>click a point</b> in the first plot to train that point. If you\'re done with this page go to <a href="/whatisaneuralnetwork">What is a neural network?</a>',
-    'Ok',
+    'Close',
     tag_position.top, width/2)
 
 var info_modal = new ModalData(
     'Learn more',
     'This is a single neuron which has been setup to take 2 inputs, x1 and x2 and learn what class (<b style="color:#E88923">orange</b> or <b style="color:#9F55E8">purple</b>) the data point belongs to. It does this by randomly initializing a set of weights, multiplying each data point by a set of values, transforming the sum into a probability and than evaluating the difference between the output and the target class.',
-    'Ok',
+    'Close',
     tag_position.top, width/2)
 
 var walkthru_modal = new ModalData(
     'Walkthrough Mode',
     'You are currently in walk-through mode, clicking this icon toggles between walkthrough and looping modes.',
-    'Ok',
+    'Close',
     187, width - 200)
 
 var looping_modal = new ModalData(
     'Looping Mode',
     'You are currently in looping mode, clicking this icon toggles between walkthrough and looping modes.',
-    'Ok',
+    'Close',
     187, width - 200)
 
 var points_clicked = 0
@@ -321,7 +350,10 @@ var walkthru = false
 var info_modal = $('#myModal')
 
 $('#whatisaneuron-action-button').on('click', function() {
-    setTimeout(function() { $('.modal-dialog').addClass('modal-sm') }, 200)
+    setTimeout(function() {
+        $('.modal-footer .btn.btn-success').removeClass('btn-success').addClass('btn-default')
+        $('.modal-dialog').addClass('modal-sm')
+    }, 200)
     if ($('#myModal').data().state == undefined) {
         pick_point_modal.show()
         $('#myModal').data('state', 'entered')
@@ -335,7 +367,6 @@ $('#help-button').on('click', function() {
 $('#info-button').on('click', function() {
     info_modal.show()
 })
-
 
 $('#walkthru-button').on('click', function() {
     if (walkthru == true) {
@@ -354,5 +385,15 @@ $('#walkthru-button').on('click', function() {
     }
 })
 
+$('#dialog-control, button.close, #whatisaneuron-action-button').on('click', function() {
+    live_dialog = $('#myModal').attr('class').indexOf('in') > 0;
+    if (live_dialog) {
+        $('#dialog-control').html('Open dialog');
+    } else {
+        $('#dialog-control').html('Close dialog');
+    }
+});
+
 add_label_pointer('.whatisaneuron_unit_input_L0', '-3', 'bottom left', 12, unit_height*2-30, false, 12, 'svg')
 add_label_pointer('.whatisaneuron_unit_input_L0', '3', 'bottom left', 12, unit_height-30, false, 12, 'svg')
+

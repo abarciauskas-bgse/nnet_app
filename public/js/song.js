@@ -1,5 +1,7 @@
-var Song = function(filename, network) {
+var Song = function(filename, artist, title, network) {
     this.filename = filename;
+    this.title = title;
+    this.artist = artist;
     this.song_data = null;
     this.sequence_length = null;
     this.note_width = null;
@@ -40,6 +42,7 @@ Song.prototype.plot = function() {
                           .attr('height', song_plot_note_height)
                           .attr('width', this.note_width)
                           .attr('fill', function(d) { return kolors(d.note) })
+    song_plot_group.append('text').text(this.artist + ' / ' + this.title).attr('x', 0).attr('y', -13)
 }
 
 Song.prototype.shift = function(iter_index, duration = default_sub_iter_duration) {
@@ -81,7 +84,7 @@ Song.prototype.draw_song_unit_line = function(type, state, duration = default_su
 
     } else if (state == 'init') {
         marker_id = css_identifier('marker', this)
-        add_marker(marker_id)
+        add_marker(marker_id, medium_grey)
         line_data = [
             [song_x, song_y],
             [song_x, song_y],

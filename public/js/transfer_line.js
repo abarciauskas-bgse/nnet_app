@@ -44,7 +44,7 @@ TransferLine.prototype.transfer_line_data = function(state) {
 
 TransferLine.prototype.add = function() {
     marker_id = css_identifier('marker', this)
-    marker = add_marker(marker_id)
+    marker = add_marker(marker_id, medium_grey)
     this.marker = marker   
     path = this.set.d3_group.append("path")
             .attr("d", line_function(this.transfer_line_data('init')))

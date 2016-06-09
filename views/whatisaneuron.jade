@@ -5,7 +5,6 @@ block header_content
 
 block content
   <!-- Information Panel -->
-  //button.btn.btn-info.btn-lg(type='button', data-toggle='modal', data-target='#myModal') Open Modal
   // Modal
   #myModal.modal.fade(role='dialog', data-backdrop='false')
     .modal-dialog
@@ -15,11 +14,12 @@ block content
           button.close(type='button', data-dismiss='modal') ×
           h4.modal-title#info-header What is a neuron?
         .modal-body#info-text
-          p Neurons are the building blocks of neural networks. This is a visualization is of a single neuron predicting a point is in the #[b(style="color:#E88923") orange] class or the #[b(style="color:#9F55E8") purple] class.
+          p Neurons are the building blocks of neural networks. This is a visualization is of a single neuron predicting a point is #[b(style="color:#E88923") orange] or #[b(style="color:#9F55E8") purple].
         .modal-footer
           button.btn.btn-success(type='button', data-dismiss='modal' id="whatisaneuron-action-button") Start training the neuron
   .row
     .col-sm-3
+      button.btn.btn-info.btn-sm.pull-left(type='button', id='dialog-control', data-toggle='modal', data-target='#myModal', style = 'margin-top:16px; font-weight: bold') Close dialog
       #walkthru-control.pull-left
         i#walkthru-button.material-icons loop
     .col-sm-6
@@ -29,9 +29,9 @@ block content
         <!-- i#pause-button.material-icons.player-icons pause -->
         i#step-button.material-icons.player-icons skip_next
     .col-sm-3
-      #help-controls.pull-right
-        i#help-button.material-icons.help-controls help
-        i#info-button.material-icons.help-controls info
+      //#help-controls.pull-right
+        //i#help-button.material-icons.help-controls help
+        //i#info-button.material-icons.help-controls info
 block footer_content
   script(src="/js/rbinom.js")
   script(src="/js/randoms.js")

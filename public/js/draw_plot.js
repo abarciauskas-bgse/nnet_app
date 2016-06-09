@@ -51,7 +51,7 @@ var draw_plot = function(yrange, xrange, plot_type, data, group, dot_class, upda
             .attr("y", 6)
             .attr("dy", ".71em")
             .style("text-anchor", "end")
-            .text(plot_type == 'data' ? "x2" : 'Loss');
+            .text(plot_type == 'data' ? "x2" : 'Error');
     }
     // add data points
     if (plot_type == 'data') {

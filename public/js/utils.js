@@ -24,7 +24,7 @@ var line_function = d3.svg.line().interpolate("basis");
 // FIXME: this is scary stuff
 var add_label_pointer = function(d3_selector, text, position, add_x_offset = 0, add_y_offset = 0, add_pointer = true, fontsize = 16, parent_group = '#layer0') {
     marker_id = 'label_pointer_' + text.split(" ").join("_")
-    if ($('#' + marker_id).length > 0) { return true }
+    //if ($('#' + marker_id).length > 0) { return true }
     offset = 30
     svg_location = $(parent_group).position()
     var page_location = $(d3_selector).position()
@@ -56,6 +56,7 @@ var add_label_pointer = function(d3_selector, text, position, add_x_offset = 0, 
 
     label_pointer_group = d3.select(parent_group).append('g')
           .attr('class','label_pointer_group')
+          .attr('id', text.split(" ").join("_") + '_label')
           .attr('transform', 'translate('
             + (x_offset + add_x_offset - svg_location.left)
             + ',' + (y_offset + add_y_offset - svg_location.top) + ')')
@@ -64,7 +65,7 @@ var add_label_pointer = function(d3_selector, text, position, add_x_offset = 0, 
     add_marker(marker_id)
     // FIXME: pixel pushing
     line_y_offset = (position == 'bottom left') ? -14 : -5
-    line_x_start = (position == 'top right') ? -3 : 45
+    line_x_start = (position == 'top right') ? -3 : 50
     // offset = (position == 'bottom left') ? -(offset + unit_width/2) : offset - 5
     if (position == 'bottom left') {
         line_data = [
@@ -75,8 +76,8 @@ var add_label_pointer = function(d3_selector, text, position, add_x_offset = 0, 
     } else if (position == 'top left') {
         line_data = [
             [line_x_start, line_y_offset], 
-            [offset*1.5 + unit_width/2, line_y_offset],
-            [offset*1.5 + unit_width/2, offset/2]
+            [offset*1.5 + unit_width, line_y_offset],
+            [offset*1.5 + unit_width, offset/2]
         ]
     } else if (position == 'top right') {
         line_data = [
@@ -98,7 +99,7 @@ var add_label_pointer = function(d3_selector, text, position, add_x_offset = 0, 
     label_pointer_group.append('path')
             .attr("d", line_function(line_data))
             .attr('fill', 'none')
-            .attr('stroke', medium_grey)
+            .attr('stroke', '#333')
             .attr("marker-end", "url(#" + marker_id + ")")
             .attr('visibility', add_pointer ? 'visible' : 'hidden'); 
 
@@ -119,7 +120,7 @@ var color_units = function(type, layer) {
     })   
 }
 
-var add_marker = function(marker_id) {
+var add_marker = function(marker_id, color = '#333') {
     marker = svg.append("defs").append("marker")
         .attr("id", marker_id)
         .attr("viewBox", "0 -5 10 10")
@@ -128,6 +129,7 @@ var add_marker = function(marker_id) {
         .attr("markerWidth", 6)
         .attr("markerHeight", 6)
         .attr("orient", "auto")
+        .style('fill', color)
       .append("path")
         .attr("d", "M0,-5L10,0L0,5");
     return marker

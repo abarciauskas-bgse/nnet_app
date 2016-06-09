@@ -127,3 +127,7 @@ svg {
 .label {
   font-size: 100%;
 }
+
+.wx_start_bar:hover, #sum_label:hover, .wxsum_bar:hover {
+  cursor: pointer;
+}

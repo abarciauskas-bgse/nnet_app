@@ -61,7 +61,6 @@ $('#training-action-button').on('click', function() {
             set.update_weights();
         })
         add_label_pointer(wts_1_id, 'input weights', 'top right')
-        add_label_pointer(wts_2_id, 'input weights', 'top right') 
 
         setTimeout(function() {
             $('#info-text').html("Next, we input a song into the network.")
@@ -83,7 +82,7 @@ $('#training-action-button').on('click', function() {
         }, default_sub_iter_duration)
         song.plot()
         song.init_pointers()
-        song.shift(current_iter)       
+        song.shift(current_iter)          
         current_state = 'network_setup'
     } else if (current_state == 'network_setup') {
         sub_iter0()
@@ -91,8 +90,13 @@ $('#training-action-button').on('click', function() {
         song.draw_song_unit_line('target', 'grow')
         units_1_id = '#' + _.find(unit_sets, {layer: 0, type: 'input'}).d3_group.attr('id')
         units_2_id = '#' + _.find(unit_sets, {layer: (layer1_visible ? 1 : 0), type: 'target'}).d3_group.attr('id')
-        add_label_pointer(units_1_id, 'inputs', 'top right')
-        add_label_pointer(units_2_id, 'targets', 'top right')
+        add_label_pointer(units_1_id, 'inputs', 'top right', 0, -unit_width)
+        add_label_pointer(units_2_id, 'targets', 'top left', -unit_width/2, -unit_width)
+
+        d3.selectAll('.song_plot_unit').each(function(d) {
+            d3.select(this).on('mouseover', notes_tip.show)
+            d3.select(this).on('mouseleave', notes_tip.hide)
+        })
 
         setTimeout(function() {
             $('#info-header').html('Training')
@@ -124,7 +128,7 @@ $('#training-action-button').on('click', function() {
             tl.grow()
         })
         memory_id = '.' + _.find(memory_cells, {layer: 0}).d3_group.attr('class')
-        add_label_pointer(memory_id, 'memory', 'top right')
+        add_label_pointer(memory_id, 'memory', 'top right', +unit_width, -unit_width)
         sub_iter2()
 
         setTimeout(function() {
@@ -146,7 +150,7 @@ $('#training-action-button').on('click', function() {
               .attr('class', 'flowline')
         })
         wt_set_id = '#' + _.find(weight_sets, {layer: 0, neuron: 0, type: 'hy'}).d3_group.attr('id')
-        add_label_pointer(wt_set_id, 'output weights', 'top right')
+        add_label_pointer(wt_set_id, 'output weights', 'top right', 0, -unit_width)
         sub_iter3()
 
         setTimeout(function() {
@@ -165,7 +169,7 @@ $('#training-action-button').on('click', function() {
             tl.grow()
         })
         unit_set_id = '#' + _.find(unit_sets, {type: 'output', layer: 0}).d3_group.attr('id')
-        add_label_pointer(unit_set_id, 'outputs', 'top right')
+        add_label_pointer(unit_set_id, 'outputs', 'top left', -unit_width/2, -2*unit_width)
         sub_iter4()
         current_state = 'sub_iter4'
 
