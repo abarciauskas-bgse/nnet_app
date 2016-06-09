@@ -65,7 +65,7 @@ $('#training-action-button').on('click', function() {
         setTimeout(function() {
             $('#info-text').html("Next, we input a song into the network.")
             $('#training-action-button').html("Input song")
-            info_modal.css('top', $('#song_plot_group').position().top - svg_position.top - song_plot_height)
+            info_modal.css('top', $('#song_plot_group').position().top - svg_position.top - 1.5*song_plot_height)
             info_modal.css('right', width-200)
             info_modal.modal('show')
         }, 200)
@@ -108,7 +108,6 @@ $('#training-action-button').on('click', function() {
         }, 200)
         current_state = 'sub_iter0'
     } else if (current_state == 'sub_iter0') {
-        $('#info-text').html("The input is multiplied by a set of weights.")
         xw_lines = _.where(tlines, {type: 'xw', layer: 0})
         xw_lines.forEach(function(tl) { return tl.grow() })
         sub_iter1()
@@ -116,7 +115,7 @@ $('#training-action-button').on('click', function() {
         setTimeout(function() {
             $('#info-text').html("The input is multiplied by the first set of weights.")
             info_modal.css('top', svg_position.top + 10)
-            info_modal.css('right', width/2 - inner_margin - unit_width*2)
+            info_modal.css('right', 834)
             info_modal.modal('show')
         }, 200)
 

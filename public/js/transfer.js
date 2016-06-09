@@ -403,7 +403,7 @@ var transfer = function(x, w, iter = current_iter) {
             add_label_pointer('#whatisaneuron_weight_set_xw_L0_N0', 'weights', 'top right', -20, -31)
         }, 500)
 
-        // FIXME
+        // FIXME: Some of the scariest code I've ever written
         $('#' + transfer_multiply_group_1.attr('id') 
           + ', #' + transfer_multiply_group_2.attr('id') 
           + ', #weights_label').on('click', function() {
@@ -417,7 +417,8 @@ var transfer = function(x, w, iter = current_iter) {
                 }, 600 + 2*sub_step_time)            
                 $('#' + transfer_multiply_group_1.attr('id')).unbind('click');
 
-                $('.wx_bar, #sum_label text').on('click', function() {
+                $('#' + transfer_multiply_group_1.attr('id') + ', #' + transfer_multiply_group_2.attr('id') + ', #weights_label').unbind('click')
+                $('.wx_bar, #sum_label').on('click', function() {
                     sub_step3_modal.show()
                     setTimeout(function() {
                         sub_step3(final_transfer_value, final_output_value)
