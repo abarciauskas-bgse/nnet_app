@@ -393,6 +393,14 @@ var transfer = function(x, w, iter = current_iter) {
         sub_step2(wx1_start_data, wx2_start_data, w2, x2, shift, shift_sign, final_transfer_value)
         sub_step3(final_transfer_value, final_output_value)
         highlight_outputs(final_output_value, sub_step_time*5, true_class)
+        setTimeout(function() {
+            update_current_point(iter, 0)
+            iter_weights = all_weights[iter]
+            iter_loss = long_term_regrets[iter]
+            update_shaded(iter_weights, iter)
+            update_loss(short_term_regrets, iter_loss, iter)
+            add_label_pointer('#whatisaneuron_unit_set_target_L0', 'target', 'bottom', -30, unit_height*2)
+        }, sub_step_time*6)        
     } else if (walkthru) {
         sub_step0_modal.show()
         setTimeout(function() {
@@ -454,8 +462,6 @@ var transfer = function(x, w, iter = current_iter) {
 
         $('#whatisaneuron_unit_set_target_L0').on('click', function() {
             if (walkthru) {
-                walkthru = false
-                $('#walkthru-button').html('loop')
                 finished_walkthru_modal.show()
             }
         })

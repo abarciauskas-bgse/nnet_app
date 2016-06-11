@@ -66,7 +66,7 @@ var transfer_multiply_xscale = d3.scale.linear()
     .range([0, transfer_multiply_height]);
 var transfer_multiply_yscale = d3.scale.linear();
 transfer_multiply_yscale.domain([-scale,scale]).nice(30);
-transfer_multiply_yscale.range([-transfer_multiply_height/2, transfer_multiply_height/2]).clamp(true);
+transfer_multiply_yscale.range([-transfer_multiply_height/2, transfer_multiply_height/2])//.clamp(true);
 var wtoffset = transfer_width + inner_margin + unit_width
 var barwidth = unit_width
 var unit_bar_height = transfer_multiply_yscale(1)
@@ -182,7 +182,8 @@ var loss_line_function = d3.svg.line()
 
 var step_duration = sub_step_time
 var play = function() {
-    walkthru = false
+    walkthru = true
+    $('#walkthru-control').click()
     for (var iter = 0; iter < max_iters*n-n; iter++) {
         current_iter += 1
         step_duration = time_scale(current_iter)
@@ -191,13 +192,14 @@ var play = function() {
                 step_update(i)
             }, total_time, current_iter)
         );
-        total_time += step_duration
+        total_time += step_duration + 500 // half second pause between each step
     }
 }
 
 // Controls
 var playing = false
 var pause = function() {
+    d3.selectAll("*").transition()
     for (var i = 0; i < timeouts.length; i++) {
         clearTimeout(timeouts[i]);
     }
@@ -276,62 +278,64 @@ ModalData.prototype.show = function(delay = 300) {
     }, delay)
 }
 
+var tmg_position = $('#' + transfer_multiply_group_1.attr('id')).position()
+var info_modal_top_pos = tmg_position.top - unit_height
+
 var pick_point_modal = new ModalData(
     'Training', 
     '<b>Click a point</b> to start training the network.',
     'Close',
-    first_plot_position.top - 2*plot_width, width - threshold_position)
+    info_modal_top_pos, width - threshold_position)
 
-var tmg_position = $('#' + transfer_multiply_group_1.attr('id')).position()
 var sub_step0_modal = new ModalData(
     'Great!', 
     'Step 1 of 5: The data is multiplied by a set of weights. <b>Click the weights</b> to sum the weighted inputs.',
     'Close',
-    tmg_position.top, width - threshold_position)
+    info_modal_top_pos, width - threshold_position)
 
 var tag_position = $('#' + transfer_addition_group.attr('id')).position()
 var sub_step2_modal = new ModalData(
     'Good work!', 
     'Step 2 of 5: The weighted inputs are summed to a single value. <b>Click the sum</b> to see the output of the neuron.',
     'Close',
-    tag_position.top, width - threshold_position)
+    info_modal_top_pos, width - threshold_position)
 
 var sub_step3_modal = new ModalData(
     'Cool!', 
     'Step 3 of 5: The threshold function outputs a value between <b>0</b> and <b>1</b>. <b>Click the threshold</b> to see the output.',
     'Close',
-    tag_position.top, width - threshold_position)
+    info_modal_top_pos, width - threshold_position)
 
 var whatisaneuron_pos = $('#whatisaneuron').position
 var output_modal = new ModalData(
     'Almost there!',
-    'Step 4 of 5: Hover over the bars to see the probability of each class, <b style="color:#E88923">orange</b> and <b style="color:#9F55E8">purple</b>. This is the output of the neuron. <b>Click one of the outputs</b> to see the true class.',
+    'Step 4 of 5: Hover over the bars to see the probability of each class, <b style="color:#E88923">orange</b> and <b style="color:#9F55E8">purple</b>. This is the output of the neuron. <b>Click the guess</b> to see the true class.',
     'Close',
-    tag_position.top, width - whatisaneuron_pos.left)
+    info_modal_top_pos, width - whatisaneuron_pos.left)
 
 var target_modal = new ModalData(
     'Done!',
     'Step 5 of 5: The difference between the probability of the class is used to update the weights to better fit the data. <b>Click the target</b> to finish.',
     'Close',
-    tag_position.top, width - whatisaneuron_pos.left)
+    info_modal_top_pos, width - whatisaneuron_pos.left)
 
 var finished_walkthru_modal = new ModalData(
     'Congratulations!',
     'Congratulations! You just trained a neuron. <b>Pick another point</b>, <b>use the controls</b> to train on the rest of the data.',
     'Close',
-    tag_position.top, width - whatisaneuron_pos.left)
+    info_modal_top_pos, width - whatisaneuron_pos.left)
 
 var help_modal = new ModalData(
     'Help',
     'Click the <b>controls</b> to train all the points or <b>click a point</b> in the first plot to train that point. If you\'re done with this page go to <a href="/whatisaneuralnetwork">What is a neural network?</a>',
     'Close',
-    tag_position.top, width/2)
+    info_modal_top_pos, width/2)
 
 var info_modal = new ModalData(
     'Learn more',
     'This is a single neuron which has been setup to take 2 inputs, x1 and x2 and learn what class (<b style="color:#E88923">orange</b> or <b style="color:#9F55E8">purple</b>) the data point belongs to. It does this by randomly initializing a set of weights, multiplying each data point by a set of values, transforming the sum into a probability and than evaluating the difference between the output and the target class.',
     'Close',
-    tag_position.top, width/2)
+    info_modal_top_pos, width/2)
 
 var walkthru_modal = new ModalData(
     'Walkthrough Mode',
@@ -346,13 +350,12 @@ var looping_modal = new ModalData(
     187, width - 200)
 
 var points_clicked = 0
-var walkthru = false
+var walkthru = true
 var info_modal = $('#myModal')
 
 $('#whatisaneuron-action-button').on('click', function() {
     setTimeout(function() {
         $('.modal-footer .btn.btn-success').removeClass('btn-success').addClass('btn-default')
-        $('.modal-dialog').addClass('modal-sm')
     }, 200)
     if ($('#myModal').data().state == undefined) {
         pick_point_modal.show()
@@ -368,7 +371,7 @@ $('#info-button').on('click', function() {
     info_modal.show()
 })
 
-$('#walkthru-button').on('click', function() {
+$('#walkthru-control').on('click', function() {
     if (walkthru == true) {
         d3.selectAll('.multiply_bar').remove()
         d3.selectAll('.link').remove()
@@ -377,11 +380,13 @@ $('#walkthru-button').on('click', function() {
         walkthru = false
         looping_modal.show()
         $('#walkthru-button').html('loop')
+        $('#walkthru-button-text').html('Looping')
     } else {
         pause()
         walkthru = true
         walkthru_modal.show()
         $('#walkthru-button').html('directions_walk')
+        $('#walkthru-button-text').html('Walkthrough')
     }
 })
 

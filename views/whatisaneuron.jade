@@ -7,7 +7,7 @@ block content
   <!-- Information Panel -->
   // Modal
   #myModal.modal.fade(role='dialog', data-backdrop='false')
-    .modal-dialog
+    .modal-dialog.modal-sm
       // Modal content
       .modal-content
         .modal-header
@@ -19,9 +19,10 @@ block content
           button.btn.btn-success(type='button', data-dismiss='modal' id="whatisaneuron-action-button") Start training the neuron
   .row
     .col-sm-3
-      button.btn.btn-info.btn-sm.pull-left(type='button', id='dialog-control', data-toggle='modal', data-target='#myModal', style = 'margin-top:16px; font-weight: bold') Close dialog
-      #walkthru-control.pull-left
-        i#walkthru-button.material-icons loop
+      button.btn.btn-info.btn-sm.pull-left(type='button', id='dialog-control', data-toggle='modal', data-target='#myModal', style = 'margin-top:16px; font-weight: bold; min-width: 100px;') Close dialog
+      button.btn.btn-info.btn-sm.pull-left#walkthru-control(type='button', style = 'margin-left: 3px; color: white; margin-top: 16px; font-weight: bold')
+        i#walkthru-button.material-icons(style='padding: 0px; margin-top: -3px; color: white; font-size: 17px; vertical-align: middle') directions_walk
+        span#walkthru-button-text    Walkthrough
     .col-sm-6
       #controls
         i#refresh-button.material-icons.player-icons replay
