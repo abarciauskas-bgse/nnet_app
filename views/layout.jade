@@ -15,6 +15,7 @@ html
     script(src="/js/bootstrap.min.js")
     script(src="/js/colorbrewer.min.js")
     script(src="/js/underscore.js")
+    script(type='text/javascript' src='http://www.midijs.net/lib/midi.js')
     script(src="/js/layout_vars.js")
     script(src="/js/color_scales.js")
     script(src="/js/utils.js")
@@ -37,8 +38,6 @@ html
           h1= title      
       .row(style="margin-top: -50px")
         ul(class="nav nav-tabs") 
-          li
-            a(href="/create") Create
           li(class = active_page == "training" ? "active" : "")
             a(href="/train") Train                         
           li(class = active_page == "whatisaneuralnetwork" ? "active" : "")

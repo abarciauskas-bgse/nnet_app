@@ -240,6 +240,9 @@ $('#training-action-button').on('click', function() {
             info_modal.modal('show')
         }, default_sub_iter_duration)                    
         current_state = 'train all'
+        music_playing = true
+        MIDIjs.play('/js/daft_punk-one_more_time.mid')
+        $('#stopplay-button').html('stop')
     } else if (current_state == 'train all') {
         // re-reverse lines
         weight_lines().forEach(function(line, i) {

@@ -2,9 +2,11 @@ extends layout
 
 block content
   #controls.pull-right(style='margin-top:10px;')
-    i#refresh-button.material-icons.player-icons.icon-sm(style='vertical-align: middle; padding-right:5px;') replay
+    i#stopplay-button.material-icons.player-icons.icon-sm(style='vertical-align: middle; padding-right: 2px;') play_arrow
+    i#refresh-button.material-icons.player-icons.icon-sm(style='vertical-align: middle; padding-right: 10px;') replay
     button(type="button", class="btn btn-info btn-sm", id='add-layer')
       #[i.material-icons(style='font-size:14px; font-weight:bold; vertical-align: sub;') add] #[b Layer]
+
   #myModal.modal.fade(role='dialog', data-backdrop = 'false')
     .modal-dialog
       .modal-content
@@ -18,3 +20,4 @@ block content
 
 block footer_content
   script(src='/js/train.js')
+

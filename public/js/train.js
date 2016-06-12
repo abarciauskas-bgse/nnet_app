@@ -78,3 +78,17 @@ d3.selectAll('.training_unit_input_L0').each(function(d) {
     d3.select(this).on('mouseover', notes_tip.show)
     d3.select(this).on('mouseleave', notes_tip.hide)
 })
+
+var music_playing = false
+$('#stopplay-button').on('click', function(){
+    if (music_playing) {
+        MIDIjs.stop();
+        $('#stopplay-button').html('play_arrow')
+        music_playing = false
+    } else {
+        MIDIjs.play('/js/daft_punk-one_more_time.mid');
+        $('#stopplay-button').html('stop')
+        music_playing = true
+    }
+})
+
