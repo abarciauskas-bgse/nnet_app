@@ -2,10 +2,12 @@ extends layout
 
 block content
   #controls.pull-right(style='margin-top:10px;')
-    i#stopplay-button.material-icons.player-icons.icon-sm(style='vertical-align: middle; padding-right: 2px;') play_arrow
-    i#refresh-button.material-icons.player-icons.icon-sm(style='vertical-align: middle; padding-right: 10px;') replay
-    button(type="button", class="btn btn-info btn-sm", id='add-layer')
-      #[i.material-icons(style='font-size:14px; font-weight:bold; vertical-align: sub;') add] #[b Layer]
+    button(type="button", class="btn btn-info btn-sm", id='stopplay-button')
+      #[i.material-icons.button-icon play_arrow] #[b Play]
+    button(type="button", class="btn btn-info btn-sm", id='refresh-button', style='margin-left:3px')
+      #[i.material-icons.button-icon replay] #[b Refresh]
+    button(type="button", class="btn btn-info btn-sm", id='add-layer', style='margin-left:3px')
+      #[i.material-icons.button-icon add] #[b Layer]
 
   #myModal.modal.fade(role='dialog', data-backdrop = 'false')
     .modal-dialog

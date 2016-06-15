@@ -20,6 +20,7 @@ var toggle_layer = function() {
         d3.select('#training_unit_set_target_L0').attr('visibility','visible')
         d3.select('#layer1').style('display', 'none')
         d3.select('#layer0').attr('transform', 'translate(' + layer_width/2 + ',0)')
+        $('#add-layer i').html('add')
         if (song.song_unit_path != undefined) {
             song.draw_song_unit_line('input', 'grow')
             song.draw_song_unit_line('target', 'grow')
@@ -34,6 +35,7 @@ var toggle_layer = function() {
         d3.select('#training_unit_set_target_L0').attr('visibility','hidden')
         d3.select('#layer1').style('display', 'block')
         d3.select('#layer0').attr('transform', 'translate(0,0)')
+        $('#add-layer i').html('remove')
         if (song.song_unit_path != undefined) {
             song.draw_song_unit_line('input', 'grow')
             song.draw_song_unit_line('target', 'grow')
@@ -83,11 +85,13 @@ var music_playing = false
 $('#stopplay-button').on('click', function(){
     if (music_playing) {
         MIDIjs.stop();
-        $('#stopplay-button').html('play_arrow')
+        $('#stopplay-button i').html('play_arrow')
+        $('#stopplay-button b').html('Play')
         music_playing = false
     } else {
         MIDIjs.play('/js/daft_punk-one_more_time.mid');
-        $('#stopplay-button').html('stop')
+        $('#stopplay-button i').html('stop')
+        $('#stopplay-button b').html('Stop')
         music_playing = true
     }
 })

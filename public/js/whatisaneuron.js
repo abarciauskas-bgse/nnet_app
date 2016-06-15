@@ -309,7 +309,7 @@ var sub_step3_modal = new ModalData(
 var whatisaneuron_pos = $('#whatisaneuron').position
 var output_modal = new ModalData(
     'Almost there!',
-    'Step 4 of 5: Hover over the bars to see the probability of each class, <b style="color:#E88923">orange</b> and <b style="color:#9F55E8">purple</b>. This is the output of the neuron. <b>Click the guess</b> to see the true class.',
+    'Step 4 of 5: Hover over the bars to see the probability of each class, <b style="color:#E88923">orange</b> and <b style="color:#9F55E8">purple</b>. The output of the neuron is <b>our guess</b> of either color. <b>Click the guess</b> to see the true class.',
     'Close',
     info_modal_top_pos, width - whatisaneuron_pos.left)
 

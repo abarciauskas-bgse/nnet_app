@@ -110,6 +110,14 @@ i.material-icons:hover {
   -webkit-box-shadow: inset 0 0 2px #ccc;
   box-shadow:         inset 0 0 2px #ccc;  
 }
+i.material-icons.button-icon {
+  padding: 0px;
+  margin-top: -3px;
+  color: white;
+  font-size: 17px;
+  vertical-align: middle;
+  padding-right: 3px;
+}
 
 #add-layer i.material-icons {
   padding: 0px;

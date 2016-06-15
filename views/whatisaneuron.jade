@@ -14,15 +14,11 @@ block content
           button.close(type='button', data-dismiss='modal') ×
           h4.modal-title#info-header What is a neuron?
         .modal-body#info-text
-          p Neurons are the building blocks of neural networks. This is a visualization is of a single neuron predicting a point is #[b(style="color:#E88923") orange] or #[b(style="color:#9F55E8") purple].
+          p Neurons are the building blocks of neural networks. This is a visualization of a single neuron predicting whether a point is #[b(style="color:#E88923") orange] or #[b(style="color:#9F55E8") purple].
         .modal-footer
           button.btn.btn-success(type='button', data-dismiss='modal' id="whatisaneuron-action-button") Start training the neuron
   .row
     .col-sm-3
-      button.btn.btn-info.btn-sm.pull-left(type='button', id='dialog-control', data-toggle='modal', data-target='#myModal', style = 'margin-top:16px; font-weight: bold; min-width: 100px;') Close dialog
-      button.btn.btn-info.btn-sm.pull-left#walkthru-control(type='button', style = 'margin-left: 3px; color: white; margin-top: 16px; font-weight: bold')
-        i#walkthru-button.material-icons(style='padding: 0px; margin-top: -3px; color: white; font-size: 17px; vertical-align: middle') directions_walk
-        span#walkthru-button-text    Walkthrough
     .col-sm-6
       #controls
         i#refresh-button.material-icons.player-icons replay
@@ -30,9 +26,10 @@ block content
         <!-- i#pause-button.material-icons.player-icons pause -->
         i#step-button.material-icons.player-icons skip_next
     .col-sm-3
-      //#help-controls.pull-right
-        //i#help-button.material-icons.help-controls help
-        //i#info-button.material-icons.help-controls info
+      button.btn.btn-info.btn-sm.pull-left(type='button', id='dialog-control', data-toggle='modal', data-target='#myModal', style = 'margin-top:16px; font-weight: bold; min-width: 100px;') Close dialog
+      button.btn.btn-info.btn-sm.pull-left#walkthru-control(type='button', style = 'margin-left: 3px; color: white; margin-top: 16px; font-weight: bold')
+        i#walkthru-button.material-icons.button-icon directions_walk
+        span#walkthru-button-text    Walkthrough    
 block footer_content
   script(src="/js/rbinom.js")
   script(src="/js/randoms.js")

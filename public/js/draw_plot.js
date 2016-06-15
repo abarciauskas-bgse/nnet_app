@@ -30,16 +30,24 @@ var draw_plot = function(yrange, xrange, plot_type, data, group, dot_class, upda
 
     if (!update) {
         // draw x axis
-        group.append("g")
+        xaxisobj = group.append("g")
             .attr("class", "x axis")
             .attr("transform", "translate(" + xrange[0] + "," + yrange[1] + ")")
             .call(xAxis)
-          .append("text")
+
+        xaxisobj.append("text")
             .attr("class", "label")
             .attr("x", xrange[1])
             .attr("y", -6)
             .style("text-anchor", "end")
-            .text(plot_type == 'data' ? "x1" : 'Iterations');
+            .text(plot_type == 'data' ? "x1" : 'Iterations')
+
+        xaxisobj.append("text")
+            .attr('class', 'axis-title')
+            .attr('x', (xrange[1]-xrange[0])/2)
+            .attr("y", 40)
+            .style('text-anchor', 'middle')
+            .text(plot_type == 'data' ? (dot_class.indexOf('active') > 0 ? 'Data Points' : 'Trained Data Points') : 'Errors');
 
         // draw y axis
         group.append("g")

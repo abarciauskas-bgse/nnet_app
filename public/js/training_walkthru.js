@@ -79,7 +79,7 @@ $('#training-action-button').on('click', function() {
             info_modal.css('top', '300px')
             info_modal.css('right', '0px')
             info_modal.modal('show')
-        }, default_sub_iter_duration)
+        }, 200)
         song.plot()
         song.init_pointers()
         song.shift(current_iter)          
@@ -168,7 +168,7 @@ $('#training-action-button').on('click', function() {
             tl.grow()
         })
         unit_set_id = '#' + _.find(unit_sets, {type: 'output', layer: 0}).d3_group.attr('id')
-        add_label_pointer(unit_set_id, 'outputs', 'top left', -unit_width/2, -2*unit_width)
+        add_label_pointer(unit_set_id, 'outputs', 'bottom', -unit_width/2, num_classes*unit_height + unit_height/2)
         sub_iter4()
         current_state = 'sub_iter4'
 
@@ -242,7 +242,8 @@ $('#training-action-button').on('click', function() {
         current_state = 'train all'
         music_playing = true
         MIDIjs.play('/js/daft_punk-one_more_time.mid')
-        $('#stopplay-button').html('stop')
+        $('#stopplay-button i').html('stop')
+        $('#stopplay-button b').html('Stop')
     } else if (current_state == 'train all') {
         // re-reverse lines
         weight_lines().forEach(function(line, i) {
