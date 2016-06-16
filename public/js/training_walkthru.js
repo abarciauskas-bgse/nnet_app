@@ -37,12 +37,89 @@ var grow_all_layer1_lines = function() {
     })    
 }
 
+var add_weights = function() {
+    var wts_1_id = '#' + _.find(weight_sets, {layer: 0, type: 'xw', neuron: 0}).d3_group.attr('id')
+    var wts_2_id = '#' + _.find(weight_sets, {layer: 1, type: 'xw', neuron: 0}).d3_group.attr('id')
+
+    weight_sets.forEach(function(set) {
+        set.update_weights();
+    })
+    add_label_pointer(wts_1_id, 'input weights', 'top right')     
+}
+
+var plot_song = function() {
+    song.plot()
+    song.init_pointers()
+    song.shift(current_iter)         
+}
+
+var song_setup = function() {
+    song.draw_song_unit_line('input', 'grow')
+    song.draw_song_unit_line('target', 'grow')
+    units_1_id = '#' + _.find(unit_sets, {layer: 0, type: 'input'}).d3_group.attr('id')
+    units_2_id = '#' + _.find(unit_sets, {layer: (layer1_visible ? 1 : 0), type: 'target'}).d3_group.attr('id')
+    add_label_pointer(units_1_id, 'inputs', 'top right', 0, -unit_width)
+    add_label_pointer(units_2_id, 'targets', 'top left', -unit_width/2, -unit_width) 
+    d3.selectAll('.song_plot_unit').each(function(d) {
+        d3.select(this).on('mouseover', notes_tip.show)
+        d3.select(this).on('mouseleave', notes_tip.hide)
+    })
+}
+
+var setup_xw_lines = function() {
+    xw_lines = _.where(tlines, {type: 'xw', layer: 0})
+    xw_lines.forEach(function(tl) { return tl.grow() })    
+}
+
+var setup_wh_lines = function() {
+    wxh_lines = _.where(tlines, {type: 'wxh', layer: 0})
+    wxh_lines.forEach(function(tl) {
+        memory_cells_open_close('left', 0)
+        tl.grow()
+    })
+    memory_id = '.' + _.find(memory_cells, {layer: 0}).d3_group.attr('class')
+    add_label_pointer(memory_id, 'memory', 'top right', +unit_width, -unit_width)    
+}
+
+var setup_hh_lines = function() {
+    hh_lines = _.where(tlines, {type: 'hh', layer: 0})
+    hh_lines.forEach(function(tl) {
+        memory_cells_open_close('right', 0)
+        tl.grow()
+        // only needs to happen once
+        tl.path.transition().duration(default_sub_iter_duration)
+          .delay(default_sub_iter_duration)
+          .attr('class', 'flowline')
+    })
+    wt_set_id = '#' + _.find(weight_sets, {layer: 0, neuron: 0, type: 'hy'}).d3_group.attr('id')
+    add_label_pointer(wt_set_id, 'output weights', 'top right', 0, -unit_width)    
+}
+
+var setup_hy_lines = function() {
+    hy_lines = _.where(tlines, {type: 'hy', layer: 0})
+    hy_lines.forEach(function(tl) {
+        tl.grow()
+    })
+    unit_set_id = '#' + _.find(unit_sets, {type: 'output', layer: 0}).d3_group.attr('id')
+    add_label_pointer(unit_set_id, 'outputs', 'bottom', -unit_width/2, num_classes*unit_height + unit_height/2)    
+}
+var instant_setup = function() {
+    var info_modal = $('#myModal')
+    var svg_position = $('svg').position() 
+    add_weights()  
+    plot_song()
+    song_setup()
+    setup_xw_lines()
+    setup_wh_lines()
+    setup_hh_lines()
+    setup_hy_lines()
+    play()
+}
+
 $('#training-action-button').on('click', function() {
     current_iter_notes = iter_note_sets[current_iter]
     var info_modal = $('#myModal')
     var svg_position = $('svg').position()
-    var wts_1_id = '#' + _.find(weight_sets, {layer: 0, type: 'xw', neuron: 0}).d3_group.attr('id')
-    var wts_2_id = '#' + _.find(weight_sets, {layer: 1, type: 'xw', neuron: 0}).d3_group.attr('id')
 
     if (current_state == 'entered') {
         setTimeout(function() {
@@ -57,10 +134,7 @@ $('#training-action-button').on('click', function() {
 
         current_state = 'add_weights'       
     } else if (current_state == 'add_weights') {
-        weight_sets.forEach(function(set) {
-            set.update_weights();
-        })
-        add_label_pointer(wts_1_id, 'input weights', 'top right')
+        add_weights()
 
         setTimeout(function() {
             $('#info-text').html("Next, we input a song into the network.")
@@ -80,23 +154,13 @@ $('#training-action-button').on('click', function() {
             info_modal.css('right', '0px')
             info_modal.modal('show')
         }, 200)
-        song.plot()
-        song.init_pointers()
-        song.shift(current_iter)          
+
+        plot_song()
+     
         current_state = 'network_setup'
     } else if (current_state == 'network_setup') {
         sub_iter0()
-        song.draw_song_unit_line('input', 'grow')
-        song.draw_song_unit_line('target', 'grow')
-        units_1_id = '#' + _.find(unit_sets, {layer: 0, type: 'input'}).d3_group.attr('id')
-        units_2_id = '#' + _.find(unit_sets, {layer: (layer1_visible ? 1 : 0), type: 'target'}).d3_group.attr('id')
-        add_label_pointer(units_1_id, 'inputs', 'top right', 0, -unit_width)
-        add_label_pointer(units_2_id, 'targets', 'top left', -unit_width/2, -unit_width)
-
-        d3.selectAll('.song_plot_unit').each(function(d) {
-            d3.select(this).on('mouseover', notes_tip.show)
-            d3.select(this).on('mouseleave', notes_tip.hide)
-        })
+        song_setup()
 
         setTimeout(function() {
             $('#info-header').html('Training')
@@ -108,8 +172,7 @@ $('#training-action-button').on('click', function() {
         }, 200)
         current_state = 'sub_iter0'
     } else if (current_state == 'sub_iter0') {
-        xw_lines = _.where(tlines, {type: 'xw', layer: 0})
-        xw_lines.forEach(function(tl) { return tl.grow() })
+        setup_xw_lines()
         sub_iter1()
 
         setTimeout(function() {
@@ -121,13 +184,7 @@ $('#training-action-button').on('click', function() {
 
         current_state = 'sub_iter1'
     } else if (current_state == 'sub_iter1') {
-        wxh_lines = _.where(tlines, {type: 'wxh', layer: 0})
-        wxh_lines.forEach(function(tl) {
-            memory_cells_open_close('left', 0)
-            tl.grow()
-        })
-        memory_id = '.' + _.find(memory_cells, {layer: 0}).d3_group.attr('class')
-        add_label_pointer(memory_id, 'memory', 'top right', +unit_width, -unit_width)
+        setup_wh_lines()
         sub_iter2()
 
         setTimeout(function() {
@@ -139,17 +196,7 @@ $('#training-action-button').on('click', function() {
 
         current_state = 'sub_iter2'
     } else if (current_state == 'sub_iter2') {
-        hh_lines = _.where(tlines, {type: 'hh', layer: 0})
-        hh_lines.forEach(function(tl) {
-            memory_cells_open_close('right', 0)
-            tl.grow()
-            // only needs to happen once
-            tl.path.transition().duration(default_sub_iter_duration)
-              .delay(default_sub_iter_duration)
-              .attr('class', 'flowline')
-        })
-        wt_set_id = '#' + _.find(weight_sets, {layer: 0, neuron: 0, type: 'hy'}).d3_group.attr('id')
-        add_label_pointer(wt_set_id, 'output weights', 'top right', 0, -unit_width)
+        setup_hh_lines()
         sub_iter3()
 
         setTimeout(function() {
@@ -163,12 +210,7 @@ $('#training-action-button').on('click', function() {
     } else if (current_state == 'sub_iter3') {
         $('#info-text').html("Finally, the hidden state is multiplied by an output set of weights, which formulates the probability of each note following the current note.")
 
-        hy_lines = _.where(tlines, {type: 'hy', layer: 0})
-        hy_lines.forEach(function(tl) {
-            tl.grow()
-        })
-        unit_set_id = '#' + _.find(unit_sets, {type: 'output', layer: 0}).d3_group.attr('id')
-        add_label_pointer(unit_set_id, 'outputs', 'bottom', -unit_width/2, num_classes*unit_height + unit_height/2)
+        setup_hy_lines()
         sub_iter4()
         current_state = 'sub_iter4'
 
@@ -251,6 +293,7 @@ $('#training-action-button').on('click', function() {
                 .attr('d', line_function(line.line_data.reverse()))
         })
         play()
+        network_running = true
         current_state = 'playing'
     }
 })

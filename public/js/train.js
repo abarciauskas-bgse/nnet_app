@@ -82,6 +82,7 @@ d3.selectAll('.training_unit_input_L0').each(function(d) {
 })
 
 var music_playing = false
+var network_running = false
 $('#stopplay-button').on('click', function(){
     if (music_playing) {
         MIDIjs.stop();
@@ -89,6 +90,9 @@ $('#stopplay-button').on('click', function(){
         $('#stopplay-button b').html('Play')
         music_playing = false
     } else {
+        if (!network_running) {
+            instant_setup()
+        }
         MIDIjs.play('/js/daft_punk-one_more_time.mid');
         $('#stopplay-button i').html('stop')
         $('#stopplay-button b').html('Stop')
