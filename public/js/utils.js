@@ -161,12 +161,6 @@ var update_units = function(layer, type) {
             return 'white'
         }
       })
-      // .attr('fill-opacity', function(d, i) {
-      //       this_probs = _.map(_.where(lines, {index: i}), function(l) { return l.value })
-      //       total_prob = _.reduce(this_probs, function(memo, num) { return memo + num })
-      //       unit_set.values[i] = total_prob
-      //       return Math.max(0.15, total_prob)
-      // })
 }
 
 

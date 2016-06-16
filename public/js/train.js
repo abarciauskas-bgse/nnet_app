@@ -86,6 +86,7 @@ var network_running = false
 $('#stopplay-button').on('click', function(){
     if (music_playing) {
         MIDIjs.stop();
+        pause();
         $('#stopplay-button i').html('play_arrow')
         $('#stopplay-button b').html('Play')
         music_playing = false
