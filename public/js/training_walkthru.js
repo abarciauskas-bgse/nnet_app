@@ -6,8 +6,16 @@ var timeouts = [];
 var play = function() {
     playing = true
     for (i = 1; i < (song.sequence_length-current_iter); i++) {
-        timeouts.push(setTimeout(function(){ iter(); }, i*default_sub_iter_duration));
+        timeouts.push(setTimeout(function(){
+            iter();
+        }, i*default_sub_iter_duration));
     }
+    // restart
+    timeouts.push(setTimeout(function() {
+        current_iter = 0;
+        current_iter_notes = iter_note_sets[current_iter]
+        play();
+    }, (song.sequence_length-current_iter)*default_sub_iter_duration))
     current_state = 'playing'    
 }
 

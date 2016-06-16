@@ -153,13 +153,20 @@ var update_units = function(layer, type) {
     unit_set.d3_group.selectAll('.unit')
       .transition()
       .duration(default_sub_iter_duration)
-      .style('fill', function(d, i) { return kolors(i)})
-      .attr('fill-opacity', function(d, i) {
-            this_probs = _.map(_.where(lines, {index: i}), function(l) { return l.value })
-            total_prob = _.reduce(this_probs, function(memo, num) { return memo + num })
-            unit_set.values[i] = total_prob
-            return Math.max(0.15, total_prob)
+      .style('fill', function(d, i) {
+        rand = rbinom(0,1,0.5)
+        if (rand > 0.6) {
+            return kolors(i)
+        } else {
+            return 'white'
+        }
       })
+      // .attr('fill-opacity', function(d, i) {
+      //       this_probs = _.map(_.where(lines, {index: i}), function(l) { return l.value })
+      //       total_prob = _.reduce(this_probs, function(memo, num) { return memo + num })
+      //       unit_set.values[i] = total_prob
+      //       return Math.max(0.15, total_prob)
+      // })
 }
 
 
