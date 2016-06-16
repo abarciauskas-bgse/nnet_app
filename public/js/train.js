@@ -93,7 +93,9 @@ $('#stopplay-button').on('click', function(){
     } else {
         if (!network_running) {
             instant_setup()
+            network_running = true
         }
+        play()
         MIDIjs.play('/js/daft_punk-one_more_time.mid');
         $('#stopplay-button i').html('stop')
         $('#stopplay-button b').html('Stop')
