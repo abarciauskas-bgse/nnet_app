@@ -6,11 +6,12 @@
 
     ```
     git clone https://github.com/abarciauskas-bgse/nnet_app
+    cd nnet_app
     ```
 
 3. Install and run the app
 
     ```bash
-    npm install
+    sudo npm install
     DEBUG=nnet_app:* npm start
     ```
